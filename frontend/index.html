@@ -13,390 +13,284 @@
 
 <body>
 
+  <!-- Top Navbar Header matching mockup -->
   <nav class="navbar">
     <div class="nav-container">
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <img src="PackemonLogo.png" alt="Packemon Logo" style="height: 40px; vertical-align: middle;">
-        <div id="vm-status-badge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;">
-          <span id="vm-status-dot" style="width: 10px; height: 10px; border-radius: 50%; background-color: #ffd700; display: inline-block;"></span>
-          <span id="vm-status-text" style="color: white; font-weight: 500;">VM: Checking...</span>
-          <button id="vm-toggle-btn" style="background: white; color: #0078d4; border: none; padding: 3px 10px; border-radius: 12px; cursor: pointer; font-size: 0.75rem; font-weight: bold; margin-left: 5px;">▶️ Start Worker</button>
-        </div>
+      <div class="brand-wrapper">
+        <img src="PackemonLogo.png" alt="Packemon Logo" class="brand-logo">
+        <span id="vm-status-dot" class="status-dot-indicator" title="VM Status"></span>
       </div>
-      <div style="display: flex; gap: 15px; align-items: center;">
-        <div id="user-info">Logged in as: Loading...</div>
-        <button id="logoutButton" onclick="signOut()"
-          style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; cursor: pointer;">Logout</button>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="header-pill-btn">Dark Mode</button>
+        <button id="sync-apps-btn" class="header-pill-btn">Sync Ext Apps</button>
+        <button id="vm-toggle-btn" class="header-pill-btn">Start Worker</button>
+        <a href="https://teams.microsoft.com/l/chat/0/0?users=laeeq.humam@hm.com&message=Hi%20Man,%2C%20Your%20Packemon%20sucks%20like%20you."
+          target="_blank" style="text-decoration: none;">
+          <button type="button" class="header-pill-btn">Get Help</button>
+        </a>
       </div>
     </div>
   </nav>
 
-  <div class="container">
+  <div class="app-container">
 
-    <div class="top-description" style="display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <h3>Welcome to Packemon! Your Intelligent Intune Packager.</h3>
-        <p>
-          Define your application's installation behavior and metadata below; the system will
-          automatically build and orchestrate an Intune (.intunewin) package for deployment.
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: stretch;">
-        <button id="theme-toggle"
-          style="background-color: var(--surface); color: var(--text); padding: 0.5rem 1rem; border: 1px solid var(--border); box-shadow: none; white-space: nowrap; font-size: inherit; border-radius: var(--radius); cursor: pointer;">🌙
-          Dark Mode</button>
-        <a href="https://teams.microsoft.com/l/chat/0/0?users=laeeq.humam@hm.com&message=Hi%20Man,%2C%20Your%20Packemon%20sucks%20like%20you."
-          target="_blank" style="text-decoration: none;">
-          <button type="button"
-            style="background-color: var(--surface); color: var(--text); padding: 0.5rem 1rem; border: 1px solid var(--border); box-shadow: none; white-space: nowrap; font-size: inherit; border-radius: var(--radius); cursor: pointer; width: 100%;">Get
-            help from a Ninja</button>
-        </a>
+    <!-- Welcome Hero Card -->
+    <div class="hero-card">
+      <h1 class="hero-title">Welcome to Packemon! Your Intelligent Intune Packager.</h1>
+      <p class="hero-subtitle">
+        Define your application's installation behavior and metadata below; the system will automatically build and
+        orchestrate an Intune (.intunewin) package for deployment.
+      </p>
+    </div>
+
+    <!-- Center Navigation Pill Switcher Tabs -->
+    <div class="center-tabs-wrapper">
+      <div class="main-tabs-container">
+        <button class="main-tab-btn active" data-view="view-dashboard">Dashboard</button>
+        <button class="main-tab-btn" data-view="view-manifest">Create Manifest</button>
+        <button class="main-tab-btn" data-view="view-logs">Logs</button>
       </div>
     </div>
 
-    <div class="card form-card">
-      <div class="sidebar">
-        <ul id="tab-nav">
-          <li class="active" data-tab="tab-app-info">App Information</li>
-          <li data-tab="tab-install-behavior">Installation Behavior</li>
-          <li data-tab="tab-pre-install">Pre-Install Actions</li>
-          <li data-tab="tab-post-install">Post-Install Actions</li>
-          <li data-tab="tab-config">Configuration</li>
-          <li data-tab="tab-detection">Detection Rules</li>
-          <li data-tab="tab-reqs">Requirements</li>
-          <li data-tab="tab-deps">Dependencies</li>
-          <li data-tab="tab-super">Supersedence</li>
-          <li data-tab="tab-return">Return Codes</li>
-          <li data-tab="tab-review">Review & Deploy</li>
-        </ul>
-      </div>
+    <!-- 1. DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view-panel active">
+      <div class="dashboard-grid">
+        <!-- Left Main Card: Weekly Packages Chart -->
+        <div class="dashboard-card">
+          <h2 class="dashboard-card-title">Packages Built Per Week</h2>
+          <div class="dashboard-card-subtitle">Weekly telemetry tracking created Intune packages across all app pipelines.</div>
 
-      <div class="main-panel">
-        <form id="upload-form">
-
-          <!-- App Information -->
-          <div id="tab-app-info" class="tab-content active">
-            <h2>APP INFORMATION</h2>
-            <hr>
-            <h3>Basic Metadata</h3>
-
-            <div class="form-group">
-              <label for="AppInformation_ApplicationName">Application Name</label>
-              <span class="help-text">Select the application you wish to package. This sets the primary identity in
-                Intune.</span>
-              <select id="AppInformation_ApplicationName" name="AppInformation_ApplicationName">
-                <!-- Filled via API -->
-              </select>
+          <div class="chart-container">
+            <div class="chart-bar-wrapper">
+              <span class="chart-bar-value">12</span>
+              <div class="chart-bar" style="height: 35%;"></div>
+              <span class="chart-bar-label">Week 1</span>
             </div>
-
-            <div class="form-group">
-              <label for="AppInformation_Publisher">Publisher</label>
-              <span class="help-text">The vendor or creator of the software. Displayed to end-users in the Company
-                Portal.</span>
-              <input type="text" id="AppInformation_Publisher" name="AppInformation_Publisher" readonly>
+            <div class="chart-bar-wrapper">
+              <span class="chart-bar-value">18</span>
+              <div class="chart-bar" style="height: 52%;"></div>
+              <span class="chart-bar-label">Week 2</span>
             </div>
-
-            <div class="form-group">
-              <label for="AppInformation_Version">Version</label>
-              <span class="help-text">The specific release version (e.g., 1.0.5). Used by Intune to determine upgrade
-                paths.</span>
-              <input type="text" id="AppInformation_Version" name="AppInformation_Version">
+            <div class="chart-bar-wrapper">
+              <span class="chart-bar-value">25</span>
+              <div class="chart-bar" style="height: 72%;"></div>
+              <span class="chart-bar-label">Week 3</span>
             </div>
-
-            <div class="form-group">
-              <label for="AppInformation_Description">Description</label>
-              <span class="help-text">A brief overview of the app's functionality for users in the Company
-                Portal.</span>
-              <input type="text" id="AppInformation_Description" name="AppInformation_Description">
-            </div>
-
-            <h3>Platform</h3>
-            <div class="form-group">
-              <label>OS Target</label>
-              <span class="help-text">The operating system this package is designed for.</span>
-              <select name="AppInformation_OSTarget">
-                <option value="Windows">Windows</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Architecture</label>
-              <span class="help-text">Hardware architecture (x64 or x86). Ensures Intune only deploys to compatible
-                devices.</span>
-              <select name="Requirements_Architecture">
-                <option value="x64">x64</option>
-                <option value="x86">x86</option>
-              </select>
-            </div>
-
-            <h3>Install Context</h3>
-            <span class="help-text" style="display:block; margin-bottom:1rem;">Determine if the app installs for the
-              entire device (System) or just the logged-in user (User).</span>
-            <div class="form-group">
-              <label><input type="radio" name="InstallBehavior_InstallContext" value="System" checked> System</label>
-              <label><input type="radio" name="InstallBehavior_InstallContext" value="User"> User</label>
+            <div class="chart-bar-wrapper">
+              <span class="chart-bar-value">34</span>
+              <div class="chart-bar" style="height: 95%;"></div>
+              <span class="chart-bar-label">Current W4</span>
             </div>
           </div>
 
-          <!-- Installation Behavior -->
-          <div id="tab-install-behavior" class="tab-content">
-            <h2>INSTALLATION BEHAVIOR</h2>
-            <hr>
-            <h3>User Experience</h3>
-            <div class="form-group">
-              <label>Install Mode</label>
-              <span class="help-text">Silent hides the installation UI. Interactive shows it to the user.</span>
-              <select name="InstallBehavior_InstallMode">
-                <option value="Silent">Silent</option>
-                <option value="Interactive">Interactive</option>
-              </select>
+          <div class="stats-metrics-grid">
+            <div class="stat-box">
+              <div class="stat-box-num">89</div>
+              <div class="stat-box-label">Total Packages</div>
             </div>
-
-            <label>
-              <input type="checkbox" name="InstallBehavior_ShowProgress" checked>
-              <span style="display:inline-block">Show progress</span>
-            </label>
-            <span class="help-text">Displays a progress notification in the Windows Action Center during
-              installation.</span>
-
-            <label style="margin-top: 1rem;">
-              <input type="checkbox" name="InstallBehavior_AllowDefer">
-              <span style="display:inline-block">Allow defer</span>
-            </label>
-            <span class="help-text">Allows the end-user to postpone the installation to a later time.</span>
-
-            <h3>Restart Handling</h3>
-            <span class="help-text" style="display:block; margin-bottom:1rem;">Instructs Intune on how to handle
-              post-installation reboots for this package.</span>
-            <div class="form-group">
-              <label><input type="radio" name="InstallBehavior_RestartHandling" value="No restart" checked> No
-                restart</label>
-              <label><input type="radio" name="InstallBehavior_RestartHandling" value="Restart if needed"> Restart if
-                needed</label>
-              <label><input type="radio" name="InstallBehavior_RestartHandling" value="Force restart"> Force
-                restart</label>
+            <div class="stat-box">
+              <div class="stat-box-num">+28%</div>
+              <div class="stat-box-label">Weekly Growth</div>
             </div>
-
-            <h3>Reliability</h3>
-            <div class="form-group">
-              <label>Timeout (min)</label>
-              <span class="help-text">Maximum time Intune waits before considering the installation hung/failed.</span>
-              <input type="number" name="InstallBehavior_TimeoutMin" value="60">
-            </div>
-
-            <div class="form-group">
-              <label>Retry count</label>
-              <span class="help-text">Number of times Intune will attempt to re-install upon failure.</span>
-              <input type="number" name="InstallBehavior_RetryCount" value="3">
-            </div>
-
-            <div class="form-group">
-              <label>Retry interval</label>
-              <span class="help-text">Minutes to wait between installation retry attempts.</span>
-              <input type="number" name="InstallBehavior_RetryInterval" value="10">
+            <div class="stat-box">
+              <div class="stat-box-num">98.5%</div>
+              <div class="stat-box-label">Success Rate</div>
             </div>
           </div>
+        </div>
 
-          <!-- Pre-Install -->
-          <div id="tab-pre-install" class="tab-content">
-            <h2>PRE-INSTALL ACTIONS</h2>
-            <hr>
-            <h3>Process Handling</h3>
-            <div class="form-group">
-              <label>Stop processes (comma separated)</label>
-              <span class="help-text">Forcefully terminates these running processes before installation starts to
-                prevent locked files.</span>
-              <input type="text" name="InstallBehavior_StopProcesses">
+        <!-- Right Side Card: Top 3 Packages -->
+        <div class="dashboard-card">
+          <h2 class="dashboard-card-title">Top 3 Packages</h2>
+          <div class="dashboard-card-subtitle">Most frequently packaged applications this month.</div>
+
+          <div class="top-packages-list">
+            <div class="package-item-card">
+              <div class="package-rank-badge">1</div>
+              <div class="package-item-info">
+                <div class="package-item-name">Mozilla Firefox (ESR)</div>
+                <div class="package-item-count">42 Packages Built • Active</div>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label>Disk space check (MB)</label>
-              <span class="help-text">Ensure the device has this much free disk space before attempting
-                installation.</span>
-              <input type="number" name="Requirements_DiskSpaceCheckMB">
+            <div class="package-item-card">
+              <div class="package-rank-badge">2</div>
+              <div class="package-item-info">
+                <div class="package-item-name">VLC Media Player</div>
+                <div class="package-item-count">28 Packages Built • Active</div>
+              </div>
             </div>
 
-            <label style="margin-top:1rem;">
-              <input type="checkbox" name="Requirements_RequireAdmin" checked>
-              <span style="display:inline-block">Require admin rights</span>
-            </label>
-            <span class="help-text">Requires the installation to run with elevated privileges.</span>
-
-            <h3>Script</h3>
-            <label style="margin-top:1rem;">
-              <input type="checkbox" name="Scripts_EnablePreScript">
-              <span style="display:inline-block">Enable pre-install script</span>
-            </label>
-            <span class="help-text">Executes a custom PowerShell script immediately before the main installer
-              runs.</span>
-
-            <div class="form-group" style="margin-top: 1rem;">
-              <label>Script file</label>
-              <span class="help-text">Upload your custom pre-install script.</span>
-              <input type="file" id="Scripts_PreScriptFile" name="Scripts_PreScriptFile">
-            </div>
-
-            <div class="form-group">
-              <label>Timeout</label>
-              <span class="help-text">Maximum minutes the pre-install script is permitted to run.</span>
-              <input type="number" name="Scripts_PreScriptTimeout">
-            </div>
-
-            <label>
-              <input type="checkbox" name="Scripts_FailIfPreScriptFails" checked>
-              <span style="display:inline-block">Fail if script fails</span>
-            </label>
-            <span class="help-text">Aborts the entire application installation if the pre-script returns an
-              error.</span>
-          </div>
-
-          <!-- Post-Install -->
-          <div id="tab-post-install" class="tab-content">
-            <h2>POST-INSTALL ACTIONS</h2>
-            <hr>
-            <h3>Script</h3>
-            <label>
-              <input type="checkbox" name="Scripts_EnablePostScript">
-              <span style="display:inline-block">Enable post-install script</span>
-            </label>
-            <span class="help-text">Executes a custom PowerShell script after the main installer successfully
-              finishes.</span>
-
-            <div class="form-group" style="margin-top: 1rem;">
-              <label>Script file</label>
-              <span class="help-text">Upload your custom post-install script.</span>
-              <input type="file" id="Scripts_PostScriptFile" name="Scripts_PostScriptFile">
-            </div>
-
-            <h3>Services</h3>
-            <div class="form-group">
-              <label>Restart service</label>
-              <span class="help-text">Specify a Windows service name to automatically restart after installation.</span>
-              <input type="text" name="PostInstall_RestartService">
+            <div class="package-item-card">
+              <div class="package-rank-badge">3</div>
+              <div class="package-item-info">
+                <div class="package-item-name">7-Zip (x64)</div>
+                <div class="package-item-count">19 Packages Built • Active</div>
+              </div>
             </div>
           </div>
-
-          <!-- Config -->
-          <div id="tab-config" class="tab-content">
-            <h2>CONFIGURATION</h2>
-            <hr>
-            <div class="top-description" style="margin-bottom: 1.5rem; padding: 0.75rem;">
-              Define custom Registry Keys to be dynamically injected into a generated wrapper script during the
-              packaging phase.
-            </div>
-            <div id="registry-container">
-              <!-- Dynamic Rows will be added here via JS -->
-            </div>
-            <button type="button" id="addRegistryBtn"
-              style="background-color: var(--surface); color: var(--primary); border: 1px solid var(--primary); margin-top: 1rem; box-shadow: none;">+
-              Add Registry Key</button>
-          </div>
-
-          <!-- Defaults for other tabs to save space for now -->
-          <div id="tab-detection" class="tab-content">
-            <h2>DETECTION RULES</h2>
-            <hr>
-            <span class="help-text">Define how Intune determines if the application is already installed on the target
-              device.</span>
-          </div>
-
-          <div id="tab-reqs" class="tab-content">
-            <h2>REQUIREMENTS</h2>
-            <hr>
-            <span class="help-text">Set hardware or base OS build requirements that must be met before
-              installation.</span>
-          </div>
-
-          <div id="tab-deps" class="tab-content">
-            <h2>DEPENDENCIES</h2>
-            <hr>
-            <span class="help-text">Link other applications that must be installed prior to this package.</span>
-          </div>
-
-          <div id="tab-super" class="tab-content">
-            <h2>SUPERSEDENCE</h2>
-            <hr>
-            <span class="help-text">Specify older applications that this new package will uninstall and replace.</span>
-          </div>
-
-          <div id="tab--return" class="tab-content">
-            <h2>RETURN CODES</h2>
-            <hr>
-            <span class="help-text">Map installer exit codes (like 0 or 3010) to Intune success/reboot statuses.</span>
-          </div>
-
-          <!-- Review & Deploy -->
-          <div id="tab-review" class="tab-content">
-            <h2>REVIEW & DEPLOY</h2>
-            <hr>
-            <div class="form-group">
-              <label for="installer">Main Installer File</label>
-              <span class="help-text">Upload your primary setup file (.exe, .msi, etc. max 1GB). This is the binary
-                IntuneWinAppUtil will package.</span>
-              <input type="file" id="installer" name="installer">
-            </div>
-
-            <button type="submit" id="submitBtn">Submit for Approval</button>
-            <p class="help-text" style="margin-top: 10px;">
-              <strong>Note:</strong> Once submitted, the approver has to approve it in order to start the packaging
-              process. After it is packaged, the app will be automatically uploaded in Intune and deployed to the Test
-              Groups.
-            </p>
-            <div id="progress-container"
-              style="display: none; width: 100%; background: #ddd; margin-top: 15px; border-radius: 4px; height: 16px;">
-              <div id="upload-progress"
-                style="width: 0%; height: 100%; background: #107c10; border-radius: 4px; transition: width 0.2s;"></div>
-            </div>
-            <div id="upload-msg" style="margin-top: 10px; font-weight: normal; font-size: 1.05rem;"></div>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="container">
-    <div class="card" style="padding: 2.5rem;">
-      <h2 style="margin-bottom: 0; font-size: 1.4rem; font-weight: normal;">Package Requests</h2>
-      <span class="help-text" style="margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: normal;">A log of your
-        submissions, waiting for administrator
-        approval before Azure worker execution. <br> Once approved, the package will be created and deployed to
-        Intune.</span>
-      <table id="requests-table" style="font-size: 0.9rem;">
-        <thead>
-          <tr>
-            <th style="font-weight: normal; font-size: 0.9rem;">ID</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">App Name</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">Ver</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">Status</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">Submitter</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">Date</th>
-            <th style="font-weight: normal; font-size: 0.9rem;">Actions</th>
-          </tr>
-        </thead>
-        <tbody style="font-weight: normal;">
-          <!-- Rows injected by app.js -->
-        </tbody>
-      </table>
+    <!-- 2. CREATE MANIFEST VIEW -->
+    <div id="view-manifest" class="view-panel">
+      <div class="manifest-layout">
+        <!-- Left Sidebar Step Nav matching mockup -->
+        <div class="sidebar-step-nav">
+          <ul id="tab-nav" class="sidebar-step-list">
+            <li class="sidebar-step-item active" data-tab="tab-app-info">App Info & Context</li>
+            <li class="sidebar-step-item" data-tab="tab-install-behavior">Install Behavior</li>
+            <li class="sidebar-step-item" data-tab="tab-pre-install">Scripts & Workflows</li>
+            <li class="sidebar-step-item" data-tab="tab-post-install">System Integration</li>
+            <li class="sidebar-step-item" data-tab="tab-config">Services, Tasks & Drivers</li>
+            <li class="sidebar-step-item" data-tab="tab-detection">Security & Certificates</li>
+            <li class="sidebar-step-item" data-tab="tab-reqs">Browser & Office Add-ins</li>
+            <li class="sidebar-step-item" data-tab="tab-deps">Licensing & Access</li>
+            <li class="sidebar-step-item" data-tab="tab-review">Review & Deploy</li>
+          </ul>
+        </div>
+
+        <!-- Form Panel -->
+        <div class="form-main-panel">
+          <form id="upload-form">
+            <!-- App Information & Execution Context -->
+            <div id="tab-app-info" class="tab-content active">
+              <h2 class="form-section-title">APP INFORMATION & EXECUTION CONTEXT</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text);">Basic Metadata</h3>
+
+              <div class="form-group">
+                <label for="AppInformation_ApplicationName">Application Name</label>
+                <span class="help-text">Select the application you wish to package. This sets the primary identity in Intune.</span>
+                <select id="AppInformation_ApplicationName" name="AppInformation_ApplicationName">
+                  <!-- Filled via API -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="AppInformation_Publisher">Publisher</label>
+                <span class="help-text">The vendor or creator of the software. Displayed to end-users in Company Portal.</span>
+                <input type="text" id="AppInformation_Publisher" name="AppInformation_Publisher" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="AppInformation_Version">Version</label>
+                <span class="help-text">The specific release version (e.g., 1.0.5). Used by Intune for upgrade paths.</span>
+                <input type="text" id="AppInformation_Version" name="AppInformation_Version">
+              </div>
+
+              <div class="form-group">
+                <label for="AppInformation_Description">Description</label>
+                <span class="help-text">A brief overview of the app's functionality for users in Company Portal.</span>
+                <input type="text" id="AppInformation_Description" name="AppInformation_Description">
+              </div>
+
+              <h3 style="margin-top: 2rem; font-size: 1.1rem; color: var(--text);">Install Context</h3>
+              <div class="form-group">
+                <label><input type="radio" name="InstallBehavior_InstallContext" value="System" checked> System</label>
+                <label><input type="radio" name="InstallBehavior_InstallContext" value="User"> User</label>
+              </div>
+            </div>
+
+            <!-- Other Tab Placeholders -->
+            <div id="tab-install-behavior" class="tab-content">
+              <h2 class="form-section-title">INSTALLATION BEHAVIOR</h2>
+              <div class="form-group">
+                <label>Install Mode</label>
+                <select name="InstallBehavior_InstallMode">
+                  <option value="Silent">Silent</option>
+                  <option value="Interactive">Interactive</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="tab-pre-install" class="tab-content">
+              <h2 class="form-section-title">SCRIPTS & WORKFLOWS</h2>
+              <p class="help-text">Configure custom pre-installation scripts and tasks.</p>
+            </div>
+
+            <div id="tab-post-install" class="tab-content">
+              <h2 class="form-section-title">SYSTEM INTEGRATION</h2>
+              <p class="help-text">Configure post-installation tasks and system shortcuts.</p>
+            </div>
+
+            <div id="tab-config" class="tab-content">
+              <h2 class="form-section-title">SERVICES, TASKS & DRIVERS</h2>
+              <p class="help-text">Manage registry keys and system environment settings.</p>
+            </div>
+
+            <div id="tab-detection" class="tab-content">
+              <h2 class="form-section-title">SECURITY & CERTIFICATES</h2>
+              <p class="help-text">Define Intune detection rules and security policies.</p>
+            </div>
+
+            <div id="tab-reqs" class="tab-content">
+              <h2 class="form-section-title">BROWSER & OFFICE ADD-INS</h2>
+              <p class="help-text">Set OS and hardware architecture requirements.</p>
+            </div>
+
+            <div id="tab-deps" class="tab-content">
+              <h2 class="form-section-title">LICENSING & ACCESS</h2>
+              <p class="help-text">Configure prerequisite app dependencies.</p>
+            </div>
+
+            <div id="tab-review" class="tab-content">
+              <h2 class="form-section-title">REVIEW & DEPLOY</h2>
+              <p class="help-text">Submit your completed manifest to Azure Worker Queue for Intune packaging.</p>
+              <button type="submit" class="btn-primary-action">Submit & Package Application</button>
+              <div id="upload-msg" style="margin-top: 15px; font-weight: bold;"></div>
+            </div>
+
+          </form>
+        </div>
+      </div>
     </div>
+
+    <!-- 3. LOGS VIEW -->
+    <div id="view-logs" class="view-panel">
+      <div class="table-card">
+        <h2 style="margin-top: 0; font-size: 1.35rem; color: var(--text);">Package Requests & Execution Logs</h2>
+        <span class="help-text">A log of your submissions, waiting for administrator approval before Azure worker execution.</span>
+        
+        <table id="requests-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>App Name</th>
+              <th>Ver</th>
+              <th>Status</th>
+              <th>Submitter</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Injected by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   <!-- Log Viewer Modal -->
   <div id="log-modal" class="modal"
     style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
     <div class="modal-content"
-      style="background-color: var(--surface); margin: 5% auto; padding: 20px; border: 1px solid var(--border); width: 80%; border-radius: var(--radius); display: flex; flex-direction: column; max-height: 80vh;">
+      style="background-color: var(--surface); margin: 5% auto; padding: 20px; border: 1px solid var(--border); width: 80%; border-radius: var(--radius-lg); display: flex; flex-direction: column; max-height: 80vh;">
       <div
         style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">
-        <h2 style="margin: 0; color: var(--text);">Worker Execution Logs <span id="log-modal-req-id"
-            style="color: var(--primary);"></span></h2>
+        <h2 style="margin: 0; color: var(--text);">Worker Execution Logs <span id="log-modal-req-id" style="color: var(--primary-accent);"></span></h2>
         <div style="display: flex; gap: 10px; align-items: center;">
-          <button id="refresh-log-btn"
-            style="background-color: #0078d4; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">🔄 Refresh Logs</button>
-          <button id="close-log-modal"
-            style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+          <button id="refresh-log-btn" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.85rem;">🔄 Refresh Logs</button>
+          <button id="close-log-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
         </div>
       </div>
       <div id="log-content-container"
-        style="flex-grow: 1; overflow-y: auto; background-color: #1e1e1e; padding: 15px; border-radius: 4px; border: 1px solid var(--border);">
+        style="flex-grow: 1; overflow-y: auto; background-color: #1e1e1e; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
         <pre id="log-content"
           style="color: #d4d4d4; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85rem; margin: 0; white-space: pre-wrap; word-wrap: break-word;">Loading logs...</pre>
       </div>

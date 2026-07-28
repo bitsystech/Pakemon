@@ -9,7 +9,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadRequests();
     await loadApps();
 
-    // Tab Navigation
+    // Main Pill View Switcher (Dashboard / Create Manifest / Logs)
+    const mainTabBtns = document.querySelectorAll('.main-tab-btn');
+    const viewPanels = document.querySelectorAll('.view-panel');
+
+    mainTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            mainTabBtns.forEach(b => b.classList.remove('active'));
+            viewPanels.forEach(vp => vp.classList.remove('active'));
+
+            btn.classList.add('active');
+            const targetView = btn.getAttribute('data-view');
+            const targetEl = document.getElementById(targetView);
+            if (targetEl) targetEl.classList.add('active');
+        });
+    });
+
+    // Step Tab Navigation inside Create Manifest
     const tabs = document.querySelectorAll('#tab-nav li');
     const contents = document.querySelectorAll('.tab-content');
 
@@ -20,7 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             tab.classList.add('active');
             const target = tab.getAttribute('data-tab');
-            document.getElementById(target).classList.add('active');
+            const targetEl = document.getElementById(target);
+            if (targetEl) targetEl.classList.add('active');
         });
     });
 
