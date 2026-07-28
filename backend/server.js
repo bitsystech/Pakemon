@@ -105,14 +105,16 @@ app.get('/api/requests/:requestId/logs', async (req, res) => {
         const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
         const containerClient = blobServiceClient.getContainerClient('uploads');
 
-        let blobName = `logs/${req.params.requestId}.log`;
+        const reqId = req.params.requestId;
+        let blobName = `logs/${reqId}.log`;
         let blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
         let exists = await blockBlobClient.exists();
         if (!exists) {
-            // Fallback search: look for any blob matching requestId under logs/
+            // Precise Regex Search for exact logs/<reqId>.log or logs/<reqId>_*.log
+            const exactPattern = new RegExp(`^logs/${reqId}(\\.|_|$)`);
             for await (const blob of containerClient.listBlobsFlat({ prefix: `logs/` })) {
-                if (blob.name.includes(`${req.params.requestId}`)) {
+                if (exactPattern.test(blob.name)) {
                     blobName = blob.name;
                     blockBlobClient = containerClient.getBlockBlobClient(blobName);
                     exists = true;
@@ -122,7 +124,7 @@ app.get('/api/requests/:requestId/logs', async (req, res) => {
         }
 
         if (!exists) {
-            return res.status(404).json({ error: 'Log file not found. The worker may not have finished processing this request yet.' });
+            return res.status(404).send(`Log file for Request #${reqId} not found in Azure Storage. The worker VM may still be processing this request.`);
         }
 
         const downloadResponse = await blockBlobClient.download(0);
@@ -138,7 +140,7 @@ app.get('/api/requests/:requestId/logs', async (req, res) => {
         res.send(downloaded.toString());
     } catch (error) {
         console.error('Error fetching logs:', error);
-        res.status(500).json({ error: 'Failed to retrieve logs from Azure Storage.' });
+        res.status(500).send('Error fetching log output from Azure Storage.');
     }
 });
 
