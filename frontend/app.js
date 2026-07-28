@@ -247,6 +247,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Refresh Pending List Button Logic
+    const refreshPendingBtn = document.getElementById('refresh-pending-btn');
+    if (refreshPendingBtn) {
+        refreshPendingBtn.addEventListener('click', () => {
+            loadRequests();
+        });
+    }
+
+    // Refresh Logs List Button Logic
+    const refreshLogsBtn = document.getElementById('refresh-logs-btn');
+    if (refreshLogsBtn) {
+        refreshLogsBtn.addEventListener('click', () => {
+            loadRequests();
+        });
+    }
+
     // Initial VM status check & recurring 15s poll
     updateVmStatus();
     setInterval(updateVmStatus, 15000);
@@ -282,28 +298,39 @@ async function loadRequests() {
 
         // 1. Populate Requests & Execution Logs Table
         const tbodyLogs = document.querySelector('#requests-table tbody');
+        const logsEmptyState = document.getElementById('logs-empty-state');
+        const requestsTable = document.getElementById('requests-table');
+
         if (tbodyLogs) {
             tbodyLogs.innerHTML = '';
-            requests.forEach(req => {
-                const tr = document.createElement('tr');
-                let statusClass = 'status-pending';
-                const s = (req.status || '').toLowerCase();
-                if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
-                if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
+            if (requests.length === 0) {
+                if (logsEmptyState) logsEmptyState.style.display = 'block';
+                if (requestsTable) requestsTable.style.display = 'none';
+            } else {
+                if (logsEmptyState) logsEmptyState.style.display = 'none';
+                if (requestsTable) requestsTable.style.display = 'table';
 
-                tr.innerHTML = `
-                    <td>#${req.id}</td>
-                    <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
-                    <td>${escapeHtml(req.version || '1.0')}</td>
-                    <td><span class="status-badge ${statusClass}">${escapeHtml(req.status)}</span></td>
-                    <td>${escapeHtml(req.submitter || 'Admin')}</td>
-                    <td>${new Date(req.created_at).toLocaleDateString()}</td>
-                    <td>
-                        <button onclick="viewLogs(${req.id})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
-                    </td>
-                `;
-                tbodyLogs.appendChild(tr);
-            });
+                requests.forEach(req => {
+                    const tr = document.createElement('tr');
+                    let statusClass = 'status-pending';
+                    const s = (req.status || '').toLowerCase();
+                    if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
+                    if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
+
+                    tr.innerHTML = `
+                        <td>#${req.id}</td>
+                        <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
+                        <td>${escapeHtml(req.version || '1.0')}</td>
+                        <td><span class="status-badge ${statusClass}">${escapeHtml(req.status)}</span></td>
+                        <td>${escapeHtml(req.submitter || 'Admin')}</td>
+                        <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <button onclick="viewLogs(${req.id})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
+                        </td>
+                    `;
+                    tbodyLogs.appendChild(tr);
+                });
+            }
         }
 
         // 2. Populate Pending Approvals Table

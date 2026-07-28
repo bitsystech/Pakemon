@@ -530,9 +530,20 @@
     <!-- 4. LOGS VIEW -->
     <div id="view-logs" class="view-panel">
       <div class="table-card">
-        <h2 style="margin-top: 0; font-size: 1.35rem; color: var(--text);">Package Requests & Execution Logs</h2>
-        <span class="help-text">A log of your submissions, waiting for administrator approval before Azure worker execution.</span>
-        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="margin: 0; font-size: 1.35rem; color: var(--text);">Package Requests & Execution Logs</h2>
+            <span class="help-text" style="margin-top: 4px;">A log of your submissions and live execution output from the Azure worker node.</span>
+          </div>
+          <button id="refresh-logs-btn" class="btn-primary-action" style="padding: 8px 16px; font-size: 0.88rem;">🔄 Refresh Logs</button>
+        </div>
+
+        <div id="logs-empty-state" style="display: none; padding: 3rem; text-align: center; background-color: var(--surface-alt); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">📋</div>
+          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: var(--text);">No Package Submissions Yet</h3>
+          <p class="help-text" style="margin: 0;">Use the "Create Manifest" tab above to submit your first Intune package request.</p>
+        </div>
+
         <table id="requests-table">
           <thead>
             <tr>
