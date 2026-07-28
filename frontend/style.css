@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap');
 
 :root {
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -6,11 +6,11 @@
   --surface: #ffffff;
   --surface-alt: #f1f5f9;
   --surface-alt-hover: #e2e8f0;
-  --primary: #0f172a;
+  --primary: #000000;
   --primary-accent: #2563eb;
   --primary-hover: #1d4ed8;
-  --text: #0f172a;
-  --text-muted: #64748b;
+  --text: #000000;
+  --text-muted: #000000;
   --border: #cbd5e1;
   --border-light: #e2e8f0;
   --radius-pill: 50px;
@@ -26,11 +26,11 @@
   --surface: #151c2c;
   --surface-alt: #1e293b;
   --surface-alt-hover: #334155;
-  --primary: #f8fafc;
+  --primary: #ffffff;
   --primary-accent: #3b82f6;
   --primary-hover: #60a5fa;
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
+  --text: #ffffff;
+  --text-muted: #ffffff;
   --border: #334155;
   --border-light: #1e293b;
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -39,12 +39,18 @@
 
 * {
   box-sizing: border-box;
+  font-weight: 400 !important;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, span, div, button, input, select, textarea, label, td, th, li, a, b, strong {
+  font-weight: 400 !important;
+  color: var(--text);
 }
 
 body {
   font-family: var(--font-family);
   background-color: var(--bg-color);
-  color: var(--text);
+  color: #000000;
   margin: 0;
   padding: 0;
   font-size: 15px;
@@ -100,13 +106,13 @@ body {
 
 .header-pill-btn {
   background-color: var(--surface-alt);
-  color: var(--text);
+  color: #000000;
   border: 1px solid var(--border-light);
   padding: 10px 22px;
   border-radius: var(--radius-pill);
   font-family: inherit;
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: none;
@@ -125,7 +131,7 @@ body {
 
 .header-pill-btn.btn-accent {
   background-color: var(--primary-accent);
-  color: #ffffff;
+  color: #ffffff !important;
   border: none;
 }
 
@@ -151,15 +157,15 @@ body {
 
 .hero-title {
   font-size: 1.65rem;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400 !important;
+  color: #000000;
   margin: 0 0 0.6rem 0;
   letter-spacing: -0.01em;
 }
 
 .hero-subtitle {
   font-size: 1rem;
-  color: var(--text-muted);
+  color: #000000;
   margin: 0;
   line-height: 1.6;
 }
@@ -187,20 +193,20 @@ body {
   border-radius: var(--radius-pill);
   font-family: inherit;
   font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 400 !important;
+  color: #000000;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: none;
 }
 
 .main-tab-btn:hover {
-  color: var(--text);
+  color: #000000;
 }
 
 .main-tab-btn.active {
   background-color: var(--surface);
-  color: var(--text);
+  color: #000000;
   box-shadow: var(--shadow-sm);
 }
 
@@ -231,14 +237,14 @@ body {
 
 .dashboard-card-title {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   margin: 0 0 0.5rem 0;
-  color: var(--text);
+  color: #000000;
 }
 
 .dashboard-card-subtitle {
   font-size: 0.88rem;
-  color: var(--text-muted);
+  color: #000000;
   margin-bottom: 1.8rem;
 }
 
@@ -261,12 +267,11 @@ body {
   align-items: center;
   flex: 1;
   gap: 8px;
-
 }
 
 .chart-bar-value {
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   color: var(--primary-accent);
 }
 
@@ -280,8 +285,8 @@ body {
 
 .chart-bar-label {
   font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 400 !important;
+  color: #000000;
   margin-top: 6px;
 }
 
@@ -302,14 +307,14 @@ body {
 
 .stat-box-num {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   color: var(--primary-accent);
 }
 
 .stat-box-label {
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 400 !important;
+  color: #000000;
 }
 
 /* Top 3 Packages List */
@@ -340,11 +345,11 @@ body {
   height: 32px;
   border-radius: 50%;
   background-color: var(--primary-accent);
-  color: white;
+  color: white !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 400 !important;
   font-size: 0.9rem;
 }
 
@@ -355,13 +360,13 @@ body {
 
 .package-item-name {
   font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400 !important;
+  color: #000000;
 }
 
 .package-item-count {
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: #000000;
 }
 
 /* Form Manifest Builder Layout */
@@ -391,8 +396,8 @@ body {
 .sidebar-step-item {
   padding: 14px 24px;
   cursor: pointer;
-  color: var(--text-muted);
-  font-weight: 600;
+  color: #000000;
+  font-weight: 400 !important;
   font-size: 0.92rem;
   transition: all 0.2s ease;
   border-left: 4px solid transparent;
@@ -403,20 +408,19 @@ body {
 
 .sidebar-step-item:hover {
   background-color: var(--surface-alt);
-  color: var(--text);
+  color: #000000;
 }
 
-/* Left Accent Indicator Line matching mockup */
 .sidebar-step-item.active {
   background-color: #eff6ff;
   border-left: 4px solid var(--primary-accent);
-  color: var(--primary-accent);
-  font-weight: 700;
+  color: var(--primary-accent) !important;
+  font-weight: 400 !important;
 }
 
 [data-theme="dark"] .sidebar-step-item.active {
   background-color: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  color: #60a5fa !important;
 }
 
 .form-main-panel {
@@ -425,9 +429,9 @@ body {
 
 .form-section-title {
   font-size: 1.45rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   margin: 0 0 1.5rem 0;
-  color: var(--text);
+  color: #000000;
   letter-spacing: -0.01em;
 }
 
@@ -437,8 +441,8 @@ body {
 
 label {
   display: block;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400 !important;
+  color: #000000;
   margin-bottom: 0.4rem;
   font-size: 0.95rem;
 }
@@ -446,7 +450,7 @@ label {
 .help-text {
   display: block;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: #000000;
   margin-bottom: 0.6rem;
   line-height: 1.4;
 }
@@ -462,7 +466,8 @@ select {
   border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 0.98rem;
-  color: var(--text);
+  font-weight: 400 !important;
+  color: #000000;
   background-color: #ffffff;
   transition: all 0.2s ease;
   outline: none;
@@ -473,6 +478,7 @@ select {
 [data-theme="dark"] input[type="number"],
 [data-theme="dark"] select {
   background-color: var(--surface-alt);
+  color: #ffffff !important;
 }
 
 input[type="text"]:focus,
@@ -485,14 +491,14 @@ select:focus {
 /* High visibility buttons */
 .btn-primary-action {
   background-color: var(--primary-accent);
-  color: #ffffff;
+  color: #ffffff !important;
   border: none;
   padding: 14px 28px;
   cursor: pointer;
   border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
@@ -522,11 +528,12 @@ th, td {
   padding: 14px 16px;
   text-align: left;
   border-bottom: 1px solid var(--border-light);
+  font-weight: 400 !important;
 }
 
 th {
-  color: var(--text-muted);
-  font-weight: 700;
+  color: #000000;
+  font-weight: 400 !important;
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -534,30 +541,31 @@ th {
 
 td {
   font-size: 0.93rem;
-  font-weight: 500;
+  font-weight: 400 !important;
+  color: #000000;
 }
 
 .status-badge {
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 400 !important;
   display: inline-block;
 }
 
 .status-pending {
   background: #fef3c7;
-  color: #92400e;
+  color: #92400e !important;
 }
 
 .status-approved, .status-packaged {
   background: #dcfce7;
-  color: #166534;
+  color: #166534 !important;
 }
 
 .status-rejected, .status-failed {
   background: #fee2e2;
-  color: #991b1b;
+  color: #991b1b !important;
 }
 
 .tab-content {
@@ -570,10 +578,10 @@ td {
 
 .badge-pill {
   background-color: var(--primary-accent);
-  color: white;
+  color: white !important;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
   margin-left: 4px;
-  font-weight: 700;
+  font-weight: 400 !important;
 }
