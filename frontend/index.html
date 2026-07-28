@@ -13,7 +13,7 @@
 
 <body>
 
-  <!-- Top Navbar Header matching mockup -->
+  <!-- Top Navbar Header -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="brand-wrapper">
@@ -71,34 +71,26 @@
                 </linearGradient>
               </defs>
 
-              <!-- Grid Horizontal Lines -->
               <line x1="40" y1="40" x2="460" y2="40" stroke="var(--border-light)" stroke-dasharray="4,4" />
               <line x1="40" y1="90" x2="460" y2="90" stroke="var(--border-light)" stroke-dasharray="4,4" />
               <line x1="40" y1="140" x2="460" y2="140" stroke="var(--border-light)" stroke-dasharray="4,4" />
 
-              <!-- Gradient Area under Curve -->
               <path d="M 60 140 C 130 120, 160 90, 200 85 C 240 80, 290 55, 340 45 C 380 35, 410 25, 440 20 L 440 160 L 60 160 Z" fill="url(#lineGrad)" />
 
-              <!-- Smooth Curved Line -->
               <path d="M 60 140 C 130 120, 160 90, 200 85 C 240 80, 290 55, 340 45 C 380 35, 410 25, 440 20" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
 
-              <!-- Data Points & Values -->
-              <!-- Point 1 (W1: 12) -->
               <circle cx="60" cy="140" r="5" fill="#2563eb" stroke="#ffffff" stroke-width="2" />
               <text x="60" y="125" text-anchor="middle" font-size="12" fill="#000000">12</text>
               <text x="60" y="180" text-anchor="middle" font-size="12" fill="#000000">Week 1</text>
 
-              <!-- Point 2 (W2: 18) -->
               <circle cx="200" cy="85" r="5" fill="#2563eb" stroke="#ffffff" stroke-width="2" />
               <text x="200" y="70" text-anchor="middle" font-size="12" fill="#000000">18</text>
               <text x="200" y="180" text-anchor="middle" font-size="12" fill="#000000">Week 2</text>
 
-              <!-- Point 3 (W3: 25) -->
               <circle cx="340" cy="45" r="5" fill="#2563eb" stroke="#ffffff" stroke-width="2" />
               <text x="340" y="30" text-anchor="middle" font-size="12" fill="#000000">25</text>
               <text x="340" y="180" text-anchor="middle" font-size="12" fill="#000000">Week 3</text>
 
-              <!-- Point 4 (Current W4: 34) -->
               <circle cx="440" cy="20" r="6" fill="#2563eb" stroke="#ffffff" stroke-width="2" />
               <text x="440" y="10" text-anchor="middle" font-size="12" fill="#000000">34</text>
               <text x="440" y="180" text-anchor="middle" font-size="12" fill="#000000">Current W4</text>
@@ -155,20 +147,22 @@
       </div>
     </div>
 
-    <!-- 2. CREATE MANIFEST VIEW -->
+    <!-- 2. CREATE MANIFEST VIEW (FULL RICH FORM) -->
     <div id="view-manifest" class="view-panel">
       <div class="manifest-layout">
-        <!-- Left Sidebar Step Nav matching mockup -->
+        <!-- Left Sidebar Step Nav -->
         <div class="sidebar-step-nav">
           <ul id="tab-nav" class="sidebar-step-list">
-            <li class="sidebar-step-item active" data-tab="tab-app-info">App Info & Context</li>
-            <li class="sidebar-step-item" data-tab="tab-install-behavior">Install Behavior</li>
-            <li class="sidebar-step-item" data-tab="tab-pre-install">Scripts & Workflows</li>
-            <li class="sidebar-step-item" data-tab="tab-post-install">System Integration</li>
-            <li class="sidebar-step-item" data-tab="tab-config">Services, Tasks & Drivers</li>
-            <li class="sidebar-step-item" data-tab="tab-detection">Security & Certificates</li>
-            <li class="sidebar-step-item" data-tab="tab-reqs">Browser & Office Add-ins</li>
-            <li class="sidebar-step-item" data-tab="tab-deps">Licensing & Access</li>
+            <li class="sidebar-step-item active" data-tab="tab-app-info">App Information</li>
+            <li class="sidebar-step-item" data-tab="tab-install-behavior">Installation Behavior</li>
+            <li class="sidebar-step-item" data-tab="tab-pre-install">Pre-Install Actions</li>
+            <li class="sidebar-step-item" data-tab="tab-post-install">Post-Install Actions</li>
+            <li class="sidebar-step-item" data-tab="tab-config">Configuration</li>
+            <li class="sidebar-step-item" data-tab="tab-detection">Detection Rules</li>
+            <li class="sidebar-step-item" data-tab="tab-reqs">Requirements</li>
+            <li class="sidebar-step-item" data-tab="tab-deps">Dependencies</li>
+            <li class="sidebar-step-item" data-tab="tab-super">Supersedence</li>
+            <li class="sidebar-step-item" data-tab="tab-return">Return Codes</li>
             <li class="sidebar-step-item" data-tab="tab-review">Review & Deploy</li>
           </ul>
         </div>
@@ -176,12 +170,12 @@
         <!-- Form Panel -->
         <div class="form-main-panel">
           <form id="upload-form">
-            <!-- App Information & Execution Context -->
+            <!-- 1. App Information -->
             <div id="tab-app-info" class="tab-content active">
-              <h2 class="form-section-title">APP INFORMATION & EXECUTION CONTEXT</h2>
+              <h2 class="form-section-title">APP INFORMATION</h2>
               <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
 
-              <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text);">Basic Metadata</h3>
+              <h3 style="margin-top: 0; font-size: 1.1rem;">Basic Metadata</h3>
 
               <div class="form-group">
                 <label for="AppInformation_ApplicationName">Application Name</label>
@@ -209,59 +203,286 @@
                 <input type="text" id="AppInformation_Description" name="AppInformation_Description">
               </div>
 
-              <h3 style="margin-top: 2rem; font-size: 1.1rem; color: var(--text);">Install Context</h3>
+              <h3 style="margin-top: 2rem; font-size: 1.1rem;">Platform</h3>
               <div class="form-group">
+                <label>OS Target</label>
+                <span class="help-text">The operating system this package is designed for.</span>
+                <select name="AppInformation_OSTarget">
+                  <option value="Windows">Windows</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Architecture</label>
+                <span class="help-text">Hardware architecture (x64 or x86). Ensures Intune only deploys to compatible devices.</span>
+                <select name="Requirements_Architecture">
+                  <option value="x64">x64</option>
+                  <option value="x86">x86</option>
+                </select>
+              </div>
+
+              <h3 style="margin-top: 2rem; font-size: 1.1rem;">Install Context</h3>
+              <span class="help-text">Determine if the app installs for the entire device (System) or just the logged-in user (User).</span>
+              <div class="form-group" style="margin-top: 0.5rem;">
                 <label><input type="radio" name="InstallBehavior_InstallContext" value="System" checked> System</label>
                 <label><input type="radio" name="InstallBehavior_InstallContext" value="User"> User</label>
               </div>
             </div>
 
-            <!-- Other Tab Placeholders -->
+            <!-- 2. Installation Behavior -->
             <div id="tab-install-behavior" class="tab-content">
               <h2 class="form-section-title">INSTALLATION BEHAVIOR</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <h3>User Experience</h3>
               <div class="form-group">
                 <label>Install Mode</label>
+                <span class="help-text">Silent hides the installation UI. Interactive shows it to the user.</span>
                 <select name="InstallBehavior_InstallMode">
                   <option value="Silent">Silent</option>
                   <option value="Interactive">Interactive</option>
                 </select>
               </div>
+
+              <div class="form-group">
+                <label>Reboot Handling</label>
+                <span class="help-text">Controls post-install reboot behavior.</span>
+                <label><input type="radio" name="InstallBehavior_RestartHandling" value="No reboot" checked> No reboot</label>
+                <label><input type="radio" name="InstallBehavior_RestartHandling" value="Suppress reboot"> Suppress reboot</label>
+                <label><input type="radio" name="InstallBehavior_RestartHandling" value="Allow restart"> Allow restart</label>
+                <label><input type="radio" name="InstallBehavior_RestartHandling" value="Force restart"> Force restart</label>
+              </div>
+
+              <h3>Reliability</h3>
+              <div class="form-group">
+                <label>Timeout (minutes)</label>
+                <span class="help-text">Maximum time Intune waits before considering the installation hung/failed.</span>
+                <input type="number" name="InstallBehavior_TimeoutMin" value="60">
+              </div>
+
+              <div class="form-group">
+                <label>Retry count</label>
+                <span class="help-text">Number of times Intune will attempt to re-install upon failure.</span>
+                <input type="number" name="InstallBehavior_RetryCount" value="3">
+              </div>
+
+              <div class="form-group">
+                <label>Retry interval (minutes)</label>
+                <span class="help-text">Minutes to wait between installation retry attempts.</span>
+                <input type="number" name="InstallBehavior_RetryInterval" value="10">
+              </div>
             </div>
 
+            <!-- 3. Pre-Install Actions -->
             <div id="tab-pre-install" class="tab-content">
-              <h2 class="form-section-title">SCRIPTS & WORKFLOWS</h2>
-              <p class="help-text">Configure custom pre-installation scripts and tasks.</p>
+              <h2 class="form-section-title">PRE-INSTALL ACTIONS</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <h3>Process Handling</h3>
+              <div class="form-group">
+                <label>Stop processes (comma separated)</label>
+                <span class="help-text">Forcefully terminates these running processes before installation starts to prevent locked files.</span>
+                <input type="text" name="InstallBehavior_StopProcesses" placeholder="firefox, vlc, iexplore">
+              </div>
+
+              <div class="form-group">
+                <label>Disk space check (MB)</label>
+                <span class="help-text">Ensure the device has this much free disk space before attempting installation.</span>
+                <input type="number" name="Requirements_DiskSpaceCheckMB" value="500">
+              </div>
+
+              <div class="form-group">
+                <label><input type="checkbox" name="Requirements_RequireAdmin" checked> Require admin rights</label>
+                <span class="help-text">Requires the installation to run with elevated administrator privileges.</span>
+              </div>
+
+              <h3>Pre-Install Script</h3>
+              <div class="form-group">
+                <label><input type="checkbox" name="Scripts_EnablePreScript"> Enable pre-install script</label>
+                <span class="help-text">Executes a custom PowerShell script immediately before the main installer runs.</span>
+              </div>
+
+              <div class="form-group">
+                <label>Script File Upload</label>
+                <span class="help-text">Upload your custom pre-install PowerShell script (.ps1).</span>
+                <input type="file" id="Scripts_PreScriptFile" name="Scripts_PreScriptFile">
+              </div>
+
+              <div class="form-group">
+                <label>Pre-Script Timeout (minutes)</label>
+                <span class="help-text">Maximum minutes the pre-install script is permitted to run.</span>
+                <input type="number" name="Scripts_PreScriptTimeout" value="10">
+              </div>
+
+              <div class="form-group">
+                <label><input type="checkbox" name="Scripts_FailIfPreScriptFails" checked> Fail if pre-script fails</label>
+                <span class="help-text">Aborts the entire application installation if the pre-script returns an error exit code.</span>
+              </div>
             </div>
 
+            <!-- 4. Post-Install Actions -->
             <div id="tab-post-install" class="tab-content">
-              <h2 class="form-section-title">SYSTEM INTEGRATION</h2>
-              <p class="help-text">Configure post-installation tasks and system shortcuts.</p>
+              <h2 class="form-section-title">POST-INSTALL ACTIONS</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <h3>Post-Install Script</h3>
+              <div class="form-group">
+                <label><input type="checkbox" name="Scripts_EnablePostScript"> Enable post-install script</label>
+                <span class="help-text">Executes a custom PowerShell script after the main installer successfully finishes.</span>
+              </div>
+
+              <div class="form-group">
+                <label>Script File Upload</label>
+                <span class="help-text">Upload your custom post-install PowerShell script (.ps1).</span>
+                <input type="file" id="Scripts_PostScriptFile" name="Scripts_PostScriptFile">
+              </div>
+
+              <h3>Services</h3>
+              <div class="form-group">
+                <label>Restart Windows Service</label>
+                <span class="help-text">Specify a Windows service name to automatically restart after installation.</span>
+                <input type="text" name="PostInstall_RestartService" placeholder="Spooler">
+              </div>
             </div>
 
+            <!-- 5. Configuration -->
             <div id="tab-config" class="tab-content">
-              <h2 class="form-section-title">SERVICES, TASKS & DRIVERS</h2>
-              <p class="help-text">Manage registry keys and system environment settings.</p>
+              <h2 class="form-section-title">CONFIGURATION & REGISTRY</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Define custom Registry Keys to be dynamically injected into a generated wrapper script during the packaging phase.</p>
+
+              <div id="registry-container" style="margin-top: 1rem;">
+                <!-- Dynamic Registry Rows added via JS -->
+              </div>
+
+              <button type="button" id="addRegistryBtn" class="btn-secondary" style="margin-top: 1rem;">+ Add Registry Key</button>
             </div>
 
+            <!-- 6. Detection Rules -->
             <div id="tab-detection" class="tab-content">
-              <h2 class="form-section-title">SECURITY & CERTIFICATES</h2>
-              <p class="help-text">Define Intune detection rules and security policies.</p>
+              <h2 class="form-section-title">DETECTION RULES</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Define how Intune determines if the application is already installed on the target device.</p>
+
+              <div class="form-group">
+                <label>Rule Type</label>
+                <select name="Detection_RuleType">
+                  <option value="File">File / Directory Path</option>
+                  <option value="Registry">Registry Key</option>
+                  <option value="MSI">MSI Product Code</option>
+                  <option value="Script">Custom PowerShell Script</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Detection Path</label>
+                <span class="help-text">Target file or registry path (e.g. C:\Program Files\Vendor\App.exe).</span>
+                <input type="text" name="Detection_Path" placeholder="C:\Program Files\Mozilla Firefox\firefox.exe">
+              </div>
+
+              <div class="form-group">
+                <label>File or Value Name</label>
+                <input type="text" name="Detection_FileOrValue" placeholder="firefox.exe">
+              </div>
             </div>
 
+            <!-- 7. Requirements -->
             <div id="tab-reqs" class="tab-content">
-              <h2 class="form-section-title">BROWSER & OFFICE ADD-INS</h2>
-              <p class="help-text">Set OS and hardware architecture requirements.</p>
+              <h2 class="form-section-title">REQUIREMENTS</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Set hardware or base OS build requirements that must be met before installation.</p>
+
+              <div class="form-group">
+                <label>Minimum OS Version</label>
+                <select name="Requirements_MinOS">
+                  <option value="Windows 10 21H2">Windows 10 21H2</option>
+                  <option value="Windows 10 22H2">Windows 10 22H2</option>
+                  <option value="Windows 11 21H2">Windows 11 21H2</option>
+                  <option value="Windows 11 22H2">Windows 11 22H2</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Minimum RAM (MB)</label>
+                <input type="number" name="Requirements_MinRAM" value="2048">
+              </div>
             </div>
 
+            <!-- 8. Dependencies -->
             <div id="tab-deps" class="tab-content">
-              <h2 class="form-section-title">LICENSING & ACCESS</h2>
-              <p class="help-text">Configure prerequisite app dependencies.</p>
+              <h2 class="form-section-title">DEPENDENCIES</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Link other applications that must be installed prior to this package.</p>
+
+              <div class="form-group">
+                <label>Prerequisite Applications (comma-separated App IDs)</label>
+                <input type="text" name="Dependencies_PrerequisiteApps" placeholder="Microsoft.VCRedist.2015-2022, .NET6Runtime">
+              </div>
             </div>
 
+            <!-- 9. Supersedence -->
+            <div id="tab-super" class="tab-content">
+              <h2 class="form-section-title">SUPERSEDENCE</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Specify older applications that this new package will uninstall and replace.</p>
+
+              <div class="form-group">
+                <label>Superseded App IDs</label>
+                <input type="text" name="Supersedence_AppIDs" placeholder="Mozilla.Firefox.ESR.Old">
+              </div>
+
+              <div class="form-group">
+                <label><input type="checkbox" name="Supersedence_UninstallPrevious" checked> Automatically uninstall previous version</label>
+              </div>
+            </div>
+
+            <!-- 10. Return Codes -->
+            <div id="tab-return" class="tab-content">
+              <h2 class="form-section-title">RETURN CODES</h2>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <p class="help-text">Map installer exit codes (like 0 or 3010) to Intune success/reboot statuses.</p>
+
+              <div class="form-group">
+                <label>Exit Code 0</label>
+                <input type="text" value="Success" readonly>
+              </div>
+              <div class="form-group">
+                <label>Exit Code 3010</label>
+                <input type="text" value="Soft Reboot Required" readonly>
+              </div>
+              <div class="form-group">
+                <label>Exit Code 1603</label>
+                <input type="text" value="Fatal Error" readonly>
+              </div>
+            </div>
+
+            <!-- 11. Review & Deploy -->
             <div id="tab-review" class="tab-content">
               <h2 class="form-section-title">REVIEW & DEPLOY</h2>
-              <p class="help-text">Submit your completed manifest to Azure Worker Queue for Intune packaging.</p>
-              <button type="submit" class="btn-primary-action">Submit & Package Application</button>
+              <hr style="border: 0; height: 1px; background: var(--border-light); margin-bottom: 2rem;">
+
+              <div class="form-group">
+                <label for="installer">Main Installer Binary Upload (.exe, .msi, max 1GB)</label>
+                <span class="help-text">Upload your primary setup file. This is the binary IntuneWinAppUtil will package.</span>
+                <input type="file" id="installer" name="installer">
+              </div>
+
+              <button type="submit" id="submitBtn" class="btn-primary-action">Submit & Package Application</button>
+
+              <p class="help-text" style="margin-top: 15px;">
+                <strong>Note:</strong> Once submitted, the approver has to approve it in order to start the packaging process. After it is packaged, the app will be automatically uploaded to Intune and deployed to Test Groups.
+              </p>
+
+              <div id="progress-container" style="display: none; width: 100%; background: #ddd; margin-top: 15px; border-radius: 4px; height: 16px;">
+                <div id="upload-progress" style="width: 0%; height: 100%; background: #107c10; border-radius: 4px; transition: width 0.2s;"></div>
+              </div>
+
               <div id="upload-msg" style="margin-top: 15px;"></div>
             </div>
 
