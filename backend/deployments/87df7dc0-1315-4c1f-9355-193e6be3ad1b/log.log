@@ -1,0 +1,151 @@
+2026-02-22T22:52:39.5175009Z,Updating submodules.,a69f7e3b-2a5c-430a-b203-6226a9053a54,0
+2026-02-22T22:52:40.6119442Z,Preparing deployment for commit id '87df7dc0-1'.,703216e9-f5fb-4e09-a356-66ee1af5b596,0
+2026-02-22T22:52:40.9798374Z,PreDeployment: context.CleanOutputPath False,5e068219-f179-43a4-bef6-d6065f2984d2,0
+2026-02-22T22:52:41.1020167Z,PreDeployment: context.OutputPath /home/site/wwwroot,461d78cf-3c95-4797-bd53-36f7ea90880e,0
+2026-02-22T22:52:41.2253403Z,Repository path is /tmp/zipdeploy/extracted,c7a3b2ec-5516-44bd-8930-69ade5972281,0
+2026-02-22T22:52:41.3389451Z,Running oryx build...,115ae5da-7ad5-4aab-beae-2ababbaa5fcb,0
+	2026-02-22T22:52:41.3439162Z,Command: oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 18 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de7265154f0707 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log,,0
+	2026-02-22T22:52:43.5716726Z,Operation performed by Microsoft Oryx&comma; https://github.com/Microsoft/Oryx,,0
+	2026-02-22T22:52:43.6093278Z,You can report issues at https://github.com/Microsoft/Oryx/issues,,0
+	2026-02-22T22:52:43.6496917Z,,,0
+	2026-02-22T22:52:43.6794871Z,Oryx Version: 0.2.20260204.1+0fdbe200b286be083841ff7fa201c6c2316dc6b9&comma; Commit: 0fdbe200b286be083841ff7fa201c6c2316dc6b9&comma; ReleaseTagName: 20260204.1,,0
+	2026-02-22T22:52:43.7295414Z,,,0
+	2026-02-22T22:52:43.7604687Z,Build Operation ID: f6e54178fa58a3bb,,0
+	2026-02-22T22:52:43.7800892Z,Repository Commit : 87df7dc0-1315-4c1f-9355-193e6be3ad1b,,0
+	2026-02-22T22:52:43.8284127Z,OS Type           : bullseye,,0
+	2026-02-22T22:52:43.8484451Z,Image Type        : githubactions,,0
+	2026-02-22T22:52:43.9086367Z,,,0
+	2026-02-22T22:52:43.9389324Z,Primary SDK Storage URL: https://oryx-cdn.microsoft.io,,0
+	2026-02-22T22:52:43.9674436Z,Backup SDK Storage URL: ,,0
+	2026-02-22T22:52:43.9889218Z,Detecting platforms...,,0
+	2026-02-22T22:52:44.0279918Z,External SDK provider is enabled.,,0
+	2026-02-22T22:52:44.5434505Z,Requesting metadata for platform nodejs from external SDK provider,,0
+	2026-02-22T22:52:46.0044686Z,Requesting metadata for platform nodejs from external SDK provider,,0
+	2026-02-22T22:52:48.2748317Z,Detected following platforms:,,0
+	2026-02-22T22:52:48.3129981Z,  nodejs: 18.20.8,,0
+	2026-02-22T22:52:48.7407887Z,Detected the following frameworks: Express,,0
+	2026-02-22T22:52:49.1805040Z,,,0
+	2026-02-22T22:52:49.2708753Z,Using intermediate directory '/tmp/8de7265154f0707'.,,0
+	2026-02-22T22:52:49.2919805Z,,,0
+	2026-02-22T22:52:49.3313668Z,Copying files to the intermediate directory...,,0
+	2026-02-22T22:52:49.3870210Z,Copying files to intermediate directory done in 0 sec(s).,,0
+	2026-02-22T22:52:49.4110600Z,,,0
+	2026-02-22T22:52:49.4602248Z,Source directory     : /tmp/8de7265154f0707,,0
+	2026-02-22T22:52:49.5007815Z,Destination directory: /home/site/wwwroot,,0
+	2026-02-22T22:52:49.5324478Z,,,0
+	2026-02-22T22:52:49.8212537Z,Running build script snippets...,,0
+	2026-02-22T22:52:49.8403943Z,Removing existing manifest file,,0
+	2026-02-22T22:52:49.8800251Z,Creating directory for command manifest file if it does not exist,,0
+	2026-02-22T22:52:49.9000829Z,Creating a manifest file...,,0
+	2026-02-22T22:52:49.9202750Z,Node Build Command Manifest file created.,,0
+	2026-02-22T22:52:49.9392424Z,,,0
+	2026-02-22T22:52:49.9583899Z,Using Node version:,,0
+	2026-02-22T22:52:50.2092595Z,v18.20.8,,0
+	2026-02-22T22:52:50.2402145Z,,,0
+	2026-02-22T22:52:50.2687166Z,Using Npm version:,,0
+	2026-02-22T22:52:51.1541953Z,10.8.2,,0
+	2026-02-22T22:52:51.2748271Z,,,0
+	2026-02-22T22:52:51.3248313Z,Running 'npm install'...,,0
+	2026-02-22T22:52:51.3847836Z,,,0
+	2026-02-22T22:52:56.8823216Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:56.9127743Z,npm warn EBADENGINE   package: '@azure/core-auth@1.10.1'&comma;,,1
+	2026-02-22T22:52:56.9422955Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:56.9801364Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.0212460Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.0502840Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:57.0808616Z,npm warn EBADENGINE   package: '@azure/core-client@1.10.1'&comma;,,1
+	2026-02-22T22:52:57.1494718Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:57.1690458Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.2009862Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.2391716Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:57.2708261Z,npm warn EBADENGINE   package: '@azure/core-http-compat@2.3.2'&comma;,,1
+	2026-02-22T22:52:57.3014148Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:57.3412039Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.3689703Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.4106782Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:57.4408773Z,npm warn EBADENGINE   package: '@azure/core-rest-pipeline@1.22.2'&comma;,,1
+	2026-02-22T22:52:57.4880739Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:57.5088662Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.5978475Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.6188868Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:57.6481544Z,npm warn EBADENGINE   package: '@azure/core-tracing@1.3.1'&comma;,,1
+	2026-02-22T22:52:57.6891953Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:57.7189789Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.7766376Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.8255731Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:57.8538835Z,npm warn EBADENGINE   package: '@azure/core-util@1.13.1'&comma;,,1
+	2026-02-22T22:52:57.8757119Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:57.8968211Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:57.9371000Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:57.9947621Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:58.0538277Z,npm warn EBADENGINE   package: '@azure/core-xml@1.5.0'&comma;,,1
+	2026-02-22T22:52:58.0850065Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:58.1436768Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:58.1839079Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:58.2143739Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:58.2514946Z,npm warn EBADENGINE   package: '@azure/identity@4.13.0'&comma;,,1
+	2026-02-22T22:52:58.2839098Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:58.3125894Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:58.3252239Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:58.3407146Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:58.3729281Z,npm warn EBADENGINE   package: '@azure/logger@1.3.0'&comma;,,1
+	2026-02-22T22:52:58.4197785Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:58.4324793Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:58.4608988Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:58.4908486Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:58.5316875Z,npm warn EBADENGINE   package: '@azure/storage-blob@12.31.0'&comma;,,1
+	2026-02-22T22:52:58.5624660Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:58.5997047Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:58.6393670Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:58.7387367Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:58.8187163Z,npm warn EBADENGINE   package: '@azure/storage-common@12.3.0'&comma;,,1
+	2026-02-22T22:52:58.8710022Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:58.9599242Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:59.1980439Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:59.2289887Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:59.2854553Z,npm warn EBADENGINE   package: '@azure/storage-queue@12.29.0'&comma;,,1
+	2026-02-22T22:52:59.4069514Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:59.4364753Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:59.4750356Z,npm warn EBADENGINE },,1
+	2026-02-22T22:52:59.5555227Z,npm warn EBADENGINE Unsupported engine {,,1
+	2026-02-22T22:52:59.5967454Z,npm warn EBADENGINE   package: '@typespec/ts-http-runtime@0.3.3'&comma;,,1
+	2026-02-22T22:52:59.6345599Z,npm warn EBADENGINE   required: { node: '>=20.0.0' }&comma;,,1
+	2026-02-22T22:52:59.7034198Z,npm warn EBADENGINE   current: { node: 'v18.20.8'&comma; npm: '10.8.2' },,1
+	2026-02-22T22:52:59.7346054Z,npm warn EBADENGINE },,1
+	2026-02-22T22:53:24.8884073Z,,,0
+	2026-02-22T22:53:24.9188705Z,added 160 packages&comma; and audited 161 packages in 33s,,0
+	2026-02-22T22:53:24.9300189Z,,,0
+	2026-02-22T22:53:24.9473400Z,40 packages are looking for funding,,0
+	2026-02-22T22:53:24.9676818Z,  run `npm fund` for details,,0
+	2026-02-22T22:53:24.9865982Z,,,0
+	2026-02-22T22:53:25.0157752Z,found 0 vulnerabilities,,0
+	2026-02-22T22:53:25.0867731Z,,,0
+	2026-02-22T22:53:25.1169097Z,Zipping existing node_modules folder...,,0
+	2026-02-22T22:53:33.6958907Z,Done in 8 sec(s).,,0
+	2026-02-22T22:53:33.7272264Z,Build script snippets done in 44 sec(s).,,0
+	2026-02-22T22:53:33.7644489Z,Preparing output...,,0
+	2026-02-22T22:53:33.7852216Z,Using standard output preparation...,,0
+	2026-02-22T22:53:33.8019980Z,,,0
+	2026-02-22T22:53:33.8162287Z,Copying files to destination directory '/home/site/wwwroot'...,,0
+	2026-02-22T22:53:34.0689804Z,Copying to destination directory done in 1 sec(s).,,0
+	2026-02-22T22:53:34.0932562Z,Total time for destination directory preparation done in 1 sec(s).,,0
+	2026-02-22T22:53:34.1335392Z,,,0
+	2026-02-22T22:53:34.1433251Z,Removing existing manifest file,,0
+	2026-02-22T22:53:34.1655147Z,Creating a manifest file...,,0
+	2026-02-22T22:53:34.1804242Z,Manifest file created.,,0
+	2026-02-22T22:53:34.2132043Z,Copying .ostype to manifest output directory.,,0
+	2026-02-22T22:53:34.2230267Z,,,0
+	2026-02-22T22:53:34.2306729Z,Total execution done in 45 sec(s).,,0
+2026-02-22T22:53:34.6156742Z,Running post deployment command(s)...,ce2bea7a-b08a-4e18-9ade-db28b134bf1d,0
+2026-02-22T22:53:34.7822923Z,,7acd60d5-90d6-4dd3-a615-e4dc5e423ce8,0
+2026-02-22T22:53:34.9535056Z,Generating summary of Oryx build,40ab562f-b262-4023-ba9a-16cb27b06d9c,0
+2026-02-22T22:53:35.1255858Z,Parsing the build logs,c8d2b97e-e8ba-4558-82bc-e37322e3332f,0
+2026-02-22T22:53:35.2494814Z,Found 0 issue(s),da56f9d4-d557-4204-8ef6-2ebc093faf35,0
+2026-02-22T22:53:35.3718795Z,,b220ceca-e1c2-42e1-874a-8be956fbd202,0
+2026-02-22T22:53:35.4850811Z,Build Summary :,9d2b4c03-2060-4c3b-abab-69adf6861a9e,0
+2026-02-22T22:53:35.6700779Z,===============,6c057f6d-aec8-4f1d-807e-709058a76a53,0
+2026-02-22T22:53:35.8039108Z,Errors (0),42f74a19-000c-4bd4-b8ff-744b83fde735,0
+2026-02-22T22:53:35.9214238Z,Warnings (0),74cf85fe-7637-4d99-96d1-07ece1f73e28,0
+2026-02-22T22:53:36.0598597Z,,631ea3f8-595b-4391-a5cb-7a9d3e4869a6,0
+2026-02-22T22:53:36.3751376Z,Triggering recycle (preview mode disabled).,74b185f7-d12f-4458-9006-ef9f82e1ea5f,0
+2026-02-22T22:53:36.6180544Z,Deployment successful. deployer = Push-Deployer deploymentPath = ZipDeploy. Extract zip. Remote build.,2b660351-95c6-4901-8ee8-c779df5c1e16,0

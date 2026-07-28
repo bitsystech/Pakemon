@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Environment and sensitive keys
+.env
+backend/.env
+
+# Mac / System
+.DS_Store
+Thumbs.db
+
+# Build zips & temporary logs
+*.zip
+LogFiles/
+latest_logs*/
+tmp_logs*/
+upload_logs/
+weblogs/
+webapp_logs_extracted/

@@ -1,0 +1,21 @@
+name: Jules AI Agent Dispatch
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+jobs:
+  jules-agent-trigger:
+    name: Notify Jules AI Agent
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '@jules') || contains(github.event.issue.labels.*.name, 'jules')
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Dispatch Event to Jules
+        run: |
+          echo "Jules AI Agent triggered for Issue/PR #${{ github.event.issue.number }}"
+          echo "Connecting to jules.google workspace..."

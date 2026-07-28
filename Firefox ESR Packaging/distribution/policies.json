@@ -1,0 +1,14 @@
+{
+  "policies": {
+    "DisableAppUpdate": true,
+    "DisableFirefoxAccounts": true,
+    "DisableMasterPasswordCreation": true,
+    "FlashPlugin": {
+      "Default": true
+    },
+    "OfferToSaveLogins": true,
+    "OfferToSaveLoginsDefault": true,
+    "SearchBar": "unified",
+	"DontCheckDefaultBrowser": true
+  }
+}

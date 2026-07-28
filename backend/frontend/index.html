@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packemon - Enterprise Packaging Portal</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <img src="PackemonLogo.png" alt="Packemon Logo" style="height: 40px; vertical-align: middle;">
+        <div id="vm-status-badge" style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;">
+          <span id="vm-status-dot" style="width: 10px; height: 10px; border-radius: 50%; background-color: #ffd700; display: inline-block;"></span>
+          <span id="vm-status-text" style="color: white; font-weight: 500;">VM: Checking...</span>
+          <button id="vm-toggle-btn" style="background: white; color: #0078d4; border: none; padding: 3px 10px; border-radius: 12px; cursor: pointer; font-size: 0.75rem; font-weight: bold; margin-left: 5px;">▶️ Start Worker</button>
+        </div>
+      </div>
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <div id="user-info">Logged in as: Loading...</div>
+        <button id="logoutButton" onclick="signOut()"
+          style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; cursor: pointer;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="top-description" style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h3>Welcome to Packemon! Your Intelligent Intune Packager.</h3>
+        <p>
+          Define your application's installation behavior and metadata below; the system will
+          automatically build and orchestrate an Intune (.intunewin) package for deployment.
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: stretch;">
+        <button id="theme-toggle"
+          style="background-color: var(--surface); color: var(--text); padding: 0.5rem 1rem; border: 1px solid var(--border); box-shadow: none; white-space: nowrap; font-size: inherit; border-radius: var(--radius); cursor: pointer;">🌙
+          Dark Mode</button>
+        <button id="sync-apps-btn" onclick="syncExternalApps()"
+          style="background-color: #0078d4; color: white; padding: 0.5rem 1rem; border: none; box-shadow: none; white-space: nowrap; font-size: inherit; border-radius: var(--radius); cursor: pointer; font-weight: bold;">⚡ Sync External Apps</button>
+        <a href="https://teams.microsoft.com/l/chat/0/0?users=laeeq.humam@hm.com&message=Hi%20Man,%2C%20Your%20Packemon%20sucks%20like%20you."
+          target="_blank" style="text-decoration: none;">
+          <button type="button"
+            style="background-color: var(--surface); color: var(--text); padding: 0.5rem 1rem; border: 1px solid var(--border); box-shadow: none; white-space: nowrap; font-size: inherit; border-radius: var(--radius); cursor: pointer; width: 100%;">Get
+            help from a Ninja</button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Top-Level Navigation Tabs -->
+    <div class="top-nav-bar" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem;">
+      <button id="nav-btn-builder" class="top-nav-btn active" onclick="switchMainView('view-builder')"
+        style="padding: 0.75rem 1.5rem; font-size: 1.05rem; font-weight: bold; border: none; background: #0078d4; color: white; border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+        📦 Package Builder
+      </button>
+      <button id="nav-btn-requests" class="top-nav-btn" onclick="switchMainView('view-requests')"
+        style="padding: 0.75rem 1.5rem; font-size: 1.05rem; font-weight: bold; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s;">
+        📋 Package Requests & Execution Logs
+      </button>
+    </div>
+
+    <!-- View 1: Package Builder -->
+    <div id="view-builder" class="main-view active">
+      <div class="card form-card">
+        <div class="sidebar">
+          <ul id="tab-nav">
+            <li class="active" data-tab="tab-app-info">App Info & Context</li>
+            <li data-tab="tab-install-behavior">Install Behavior</li>
+            <li data-tab="tab-scripts">Scripts & Workflows</li>
+            <li data-tab="tab-config">System Integration</li>
+            <li data-tab="tab-services-tasks">Services, Tasks & Drivers</li>
+            <li data-tab="tab-security-policy">Security & Certificates</li>
+            <li data-tab="tab-browser-office">Browser & Office Add-ins</li>
+            <li data-tab="tab-licensing-access">Licensing & Access</li>
+            <li data-tab="tab-detection">Detection Rules</li>
+            <li data-tab="tab-reqs-super">Lifecycle & Supersedence</li>
+            <li data-tab="tab-review">Review & Deploy</li>
+          </ul>
+        </div>
+
+      <div class="main-panel">
+        <form id="upload-form">
+
+          <!-- App Information & Execution Context -->
+          <div id="tab-app-info" class="tab-content active">
+            <h2>APP INFORMATION & EXECUTION CONTEXT</h2>
+            <hr>
+            <h3>Basic Metadata</h3>
+
+            <div class="form-group">
+              <label for="AppInformation_ApplicationName">Application Name</label>
+              <span class="help-text">Select the application you wish to package. This sets the primary identity in Intune.</span>
+              <select id="AppInformation_ApplicationName" name="AppInformation_ApplicationName">
+                <!-- Filled via API -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="AppInformation_Publisher">Publisher</label>
+              <span class="help-text">The vendor or creator of the software. Displayed to end-users in Company Portal.</span>
+              <input type="text" id="AppInformation_Publisher" name="AppInformation_Publisher" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="AppInformation_Version">Version</label>
+              <span class="help-text">The specific release version (e.g., 1.0.5). Used by Intune for upgrade paths.</span>
+              <input type="text" id="AppInformation_Version" name="AppInformation_Version">
+            </div>
+
+            <div class="form-group">
+              <label for="AppInformation_Description">Description</label>
+              <span class="help-text">A brief overview of the app's functionality for users in Company Portal.</span>
+              <input type="text" id="AppInformation_Description" name="AppInformation_Description">
+            </div>
+
+            <h3>Platform & Architecture</h3>
+            <div class="form-group">
+              <label>OS Target</label>
+              <span class="help-text">Operating system target platform.</span>
+              <select name="AppInformation_OSTarget">
+                <option value="Windows">Windows</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Architecture</label>
+              <span class="help-text">Hardware architecture (x64 or x86).</span>
+              <select name="Requirements_Architecture">
+                <option value="x64">x64</option>
+                <option value="x86">x86</option>
+              </select>
+            </div>
+
+            <h3>Execution Context & User Components</h3>
+            <div class="form-group">
+              <label>Install Context (SYSTEM vs User)</label>
+              <span class="help-text">Does the application require installation in SYSTEM or User context?</span>
+              <label><input type="radio" name="InstallBehavior_InstallContext" value="System" checked> SYSTEM Context</label>
+              <label><input type="radio" name="InstallBehavior_InstallContext" value="User"> User Context</label>
+            </div>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Context_RequiresInteractive">
+              <span>Requires interactive installation for first launch</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Context_PerUserComponents">
+              <span>Has per-user components that must install for every logged-in user</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Context_WritesHKCUInSystem">
+              <span>Installer writes to HKCU during SYSTEM installation</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Context_ActiveSetupRequired">
+              <span>Active Setup entries required</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Context_MultiUserAVD">
+              <span>Requires installation on multi-user environments (AVD / VDI)</span>
+            </label>
+          </div>
+
+          <!-- Installation Behavior -->
+          <div id="tab-install-behavior" class="tab-content">
+            <h2>INSTALLATION BEHAVIOR</h2>
+            <hr>
+            <h3>User Experience</h3>
+            <div class="form-group">
+              <label>Install Mode</label>
+              <span class="help-text">Silent hides the installation UI. Interactive displays it.</span>
+              <select name="InstallBehavior_InstallMode">
+                <option value="Silent">Silent</option>
+                <option value="Interactive">Interactive</option>
+              </select>
+            </div>
+
+            <label>
+              <input type="checkbox" name="InstallBehavior_ShowProgress" checked>
+              <span>Show progress notification in Action Center</span>
+            </label>
+
+            <label style="margin-top: 0.75rem;">
+              <input type="checkbox" name="InstallBehavior_AllowDefer">
+              <span>Allow end-user to defer installation</span>
+            </label>
+
+            <h3>Restart & Reliability</h3>
+            <div class="form-group">
+              <label>Restart Handling</label>
+              <label><input type="radio" name="InstallBehavior_RestartHandling" value="No restart" checked> No restart</label>
+              <label><input type="radio" name="InstallBehavior_RestartHandling" value="Restart if needed"> Restart if needed</label>
+              <label><input type="radio" name="InstallBehavior_RestartHandling" value="Force restart"> Force restart</label>
+            </div>
+
+            <div class="form-group">
+              <label>Timeout (minutes)</label>
+              <input type="number" name="InstallBehavior_TimeoutMin" value="60">
+            </div>
+
+            <div class="form-group">
+              <label>Retry count</label>
+              <input type="number" name="InstallBehavior_RetryCount" value="3">
+            </div>
+          </div>
+
+          <!-- Scripts & Custom Workflows -->
+          <div id="tab-scripts" class="tab-content">
+            <h2>SCRIPTS & CUSTOM WORKFLOWS</h2>
+            <hr>
+            <h3>Script Execution Options</h3>
+
+            <label>
+              <input type="checkbox" name="Scripts_PreInstallPowerShell">
+              <span>Requires custom PowerShell execution before installation</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Scripts_PostInstallScript">
+              <span>Requires post-install configuration script execution</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Scripts_RollbackOnFailure">
+              <span>Requires rollback script execution if installation fails</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Scripts_TokenReplacement">
+              <span>Requires configuration file token replacement during deployment</span>
+            </label>
+
+            <h3>Process Management</h3>
+            <div class="form-group" style="margin-top:1rem;">
+              <label>Stop processes (comma separated)</label>
+              <span class="help-text">Forcefully terminates running processes before installation starts.</span>
+              <input type="text" name="InstallBehavior_StopProcesses">
+            </div>
+          </div>
+
+          <!-- System Integration -->
+          <div id="tab-config" class="tab-content">
+            <h2>SYSTEM INTEGRATION & ENVIRONMENT</h2>
+            <hr>
+            <h3>Environment & File Associations</h3>
+
+            <label>
+              <input type="checkbox" name="Config_ModifyEnvVars">
+              <span>Installation modifies environment variables</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Config_UpdatePATH">
+              <span>Requires PATH variable updates</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Config_FileAssociations">
+              <span>File associations required (.xyz file types)</span>
+            </label>
+            <div class="form-group" style="margin-top:0.5rem;">
+              <input type="text" name="Config_FileExtensionsList" placeholder="e.g. .xyz, .docx">
+            </div>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Config_ProtocolHandler">
+              <span>Protocol handler registration required (custom URL scheme)</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Config_RegisterCOM">
+              <span>COM components required to be registered manually</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Config_RegistryFeatureToggles">
+              <span>Requires registry-based feature toggling</span>
+            </label>
+
+            <h3 style="margin-top:1.5rem;">Custom Registry Injector</h3>
+            <div id="registry-container">
+              <!-- Dynamic Rows added via JS -->
+            </div>
+            <button type="button" id="addRegistryBtn" style="background-color: var(--surface); color: var(--primary); border: 1px solid var(--primary); margin-top: 1rem;">+ Add Registry Key</button>
+          </div>
+
+          <!-- Services, Tasks & Drivers -->
+          <div id="tab-services-tasks" class="tab-content">
+            <h2>SERVICES, TASKS & DRIVERS</h2>
+            <hr>
+            <h3>Windows Services</h3>
+
+            <label>
+              <input type="checkbox" name="Services_ServiceAccountConfig">
+              <span>App installs Windows services requiring service account configuration</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Services_DelayedStart">
+              <span>Service requires delayed start configuration</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Services_RecoveryActions">
+              <span>Service requires recovery actions configuration</span>
+            </label>
+
+            <h3 style="margin-top:1.5rem;">Scheduled Tasks & Drivers</h3>
+
+            <label>
+              <input type="checkbox" name="Tasks_ElevatedScheduledTasks">
+              <span>Scheduled tasks required with elevated privileges</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Tasks_LogonTrigger">
+              <span>Scheduled task requires user logon trigger</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Drivers_PreStageDrivers">
+              <span>Requires driver pre-staging before installation</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Drivers_TestSigningPolicy">
+              <span>Driver requires test-signing mode or special policy</span>
+            </label>
+          </div>
+
+          <!-- Security & Certificates -->
+          <div id="tab-security-policy" class="tab-content">
+            <h2>SECURITY, CERTIFICATES & NETWORK POLICIES</h2>
+            <hr>
+            <h3>Certificates & Code Signing</h3>
+
+            <label>
+              <input type="checkbox" name="Security_InstallCerts">
+              <span>Requires installation of root or intermediate certificates into Local Machine store</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_ImportPrivateKey">
+              <span>Requires certificate private key import</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_BypassCodeSigning">
+              <span>Requires code-signing validation bypass</span>
+            </label>
+
+            <h3 style="margin-top:1.5rem;">Firewall & Proxy Settings</h3>
+
+            <label>
+              <input type="checkbox" name="Security_FirewallExeRules">
+              <span>Firewall rules required for specific executable paths</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_FirewallPortExceptions">
+              <span>Inbound firewall exceptions required for specific ports</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_ProxyConfig">
+              <span>Application requires proxy configuration</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_WinHTTPProxyConfig">
+              <span>Requires WinHTTP proxy configuration</span>
+            </label>
+
+            <div class="form-group" style="margin-top:1rem;">
+              <label>TLS Version Enforcement</label>
+              <select name="Security_TLSEnforcement">
+                <option value="None">None (Default)</option>
+                <option value="TLS1.2">TLS 1.2 Enforced</option>
+                <option value="TLS1.3">TLS 1.3 Enforced</option>
+              </select>
+            </div>
+
+            <h3 style="margin-top:1.5rem;">Policies & UAC</h3>
+
+            <label>
+              <input type="checkbox" name="Security_ModifyGPO">
+              <span>Modifies security policies (Local Security Policy / GPO settings)</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Security_DisableUACPrompts">
+              <span>Requires disabling UAC prompts</span>
+            </label>
+          </div>
+
+          <!-- Browser & Office Extensions -->
+          <div id="tab-browser-office" class="tab-content">
+            <h2>BROWSER & OFFICE ADD-INS</h2>
+            <hr>
+            <h3>Browser Force-Install & Policies</h3>
+
+            <label>
+              <input type="checkbox" name="Extensions_ChromeForceInstall">
+              <span>Requires browser extension force-install for <b>Google Chrome</b></span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_EdgeForceInstall">
+              <span>Requires browser extension force-install for <b>Microsoft Edge</b></span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_BrowserPolicyRegistry">
+              <span>Requires browser policy registry injection</span>
+            </label>
+
+            <h3 style="margin-top:1.5rem;">Microsoft Office Add-ins</h3>
+
+            <label>
+              <input type="checkbox" name="Extensions_ExcelAddin">
+              <span>Installs add-in for <b>Microsoft Excel</b></span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_WordAddin">
+              <span>Installs add-in for <b>Microsoft Word</b></span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_OutlookAddin">
+              <span>Installs add-in for <b>Microsoft Outlook</b></span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_OfficeAddinEnforceRegistry">
+              <span>Office add-in requires registry-based enablement enforcement</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Extensions_DisableConflictingAddins">
+              <span>Requires disabling conflicting add-ins</span>
+            </label>
+          </div>
+
+          <!-- Licensing & Access Control -->
+          <div id="tab-licensing-access" class="tab-content">
+            <h2>LICENSING & ACCESS CONTROL</h2>
+            <hr>
+            <h3>Licensing Configuration</h3>
+
+            <label>
+              <input type="checkbox" name="Licensing_PerMachineLicensing">
+              <span>Requires per-machine licensing activation</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Licensing_DeployLicenseFile">
+              <span>Requires license file deployment to a protected path</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Licensing_ValidateLicenseServer">
+              <span>Requires license server connectivity validation during install</span>
+            </label>
+
+            <h3 style="margin-top:1.5rem;">Local Groups & File Permissions</h3>
+
+            <label>
+              <input type="checkbox" name="Access_CreateLocalGroups">
+              <span>Requires creation of local groups</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Access_AddUsersToLocalGroups">
+              <span>Requires adding users to local groups</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Access_NTFSPermissions">
+              <span>Requires NTFS permission inheritance changes</span>
+            </label>
+          </div>
+
+          <!-- Detection Rules -->
+          <div id="tab-detection" class="tab-content">
+            <h2>DETECTION RULES</h2>
+            <hr>
+
+            <label>
+              <input type="checkbox" name="Detection_CustomScript">
+              <span>Requires custom detection script instead of MSI/File/Registry</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Detection_ValidateVersion" checked>
+              <span>Detection should validate application version</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Detection_ValidateFileHash">
+              <span>Detection should validate file hash instead of version</span>
+            </label>
+          </div>
+
+          <!-- Lifecycle & Supersedence -->
+          <div id="tab-reqs-super" class="tab-content">
+            <h2>LIFECYCLE & SUPERSEDENCE</h2>
+            <hr>
+
+            <label>
+              <input type="checkbox" name="Lifecycle_RemoveLegacyVersions" checked>
+              <span>Requires removal of previous legacy versions before install</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Lifecycle_BlockDowngrades" checked>
+              <span>Requires blocking downgrade scenarios</span>
+            </label>
+
+            <label style="margin-top:0.75rem;">
+              <input type="checkbox" name="Lifecycle_ConfigureSupersedence" checked>
+              <span>Requires supersedence configuration in Intune</span>
+            </label>
+          </div>
+
+          <!-- Review & Deploy -->
+          <div id="tab-review" class="tab-content">
+            <h2>REVIEW & DEPLOY</h2>
+            <hr>
+            <div class="form-group">
+              <label for="installer">Main Installer File</label>
+              <span class="help-text">Upload your primary setup file (.exe, .msi, etc. max 1GB). This is the binary IntuneWinAppUtil will package.</span>
+              <input type="file" id="installer" name="installer">
+            </div>
+
+            <button type="submit" id="submitBtn">Submit for Approval</button>
+            <p class="help-text" style="margin-top: 10px;">
+              <strong>Note:</strong> Once submitted, the approver has to approve it in order to start the packaging process. After it is packaged, the app will be automatically uploaded in Intune and deployed to the Test Groups.
+            </p>
+            <div id="progress-container" style="display: none; width: 100%; background: #ddd; margin-top: 15px; border-radius: 4px; height: 16px;">
+              <div id="upload-progress" style="width: 0%; height: 100%; background: #107c10; border-radius: 4px; transition: width 0.2s;"></div>
+            </div>
+            <div id="upload-msg" style="margin-top: 10px; font-weight: normal; font-size: 1.05rem;"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- View 2: Package Requests & Execution Logs -->
+  <div id="view-requests" class="main-view" style="display: none;">
+    <div class="card" style="padding: 2.5rem;">
+      <h2 style="margin-bottom: 0; font-size: 1.4rem; font-weight: normal;">PACKAGE REQUESTS & EXECUTION LOGS</h2>
+      <span class="help-text" style="margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: normal; display: block;">
+        A real-time log of your submissions, automated Winget syncs, and Azure worker execution logs. Click <b>View Logs</b> to inspect live PowerShell execution logs.
+      </span>
+      <table id="requests-table" style="font-size: 0.9rem; width: 100%;">
+        <thead>
+          <tr>
+            <th style="font-weight: normal; font-size: 0.9rem;">ID</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">App Name</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">Ver</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">Status</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">Submitter</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">Date</th>
+            <th style="font-weight: normal; font-size: 0.9rem;">Actions</th>
+          </tr>
+        </thead>
+        <tbody style="font-weight: normal;">
+          <!-- Rows injected by app.js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Log Viewer Modal -->
+  <div id="log-modal" class="modal"
+    style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+    <div class="modal-content"
+      style="background-color: var(--surface); margin: 5% auto; padding: 20px; border: 1px solid var(--border); width: 80%; border-radius: var(--radius); display: flex; flex-direction: column; max-height: 80vh;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">
+        <h2 style="margin: 0; color: var(--text);">Worker Execution Logs <span id="log-modal-req-id"
+            style="color: var(--primary);"></span></h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="refresh-log-btn"
+            style="background-color: #0078d4; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: bold;">🔄 Refresh Logs</button>
+          <button id="close-log-modal"
+            style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+        </div>
+      </div>
+      <div id="log-content-container"
+        style="flex-grow: 1; overflow-y: auto; background-color: #1e1e1e; padding: 15px; border-radius: 4px; border: 1px solid var(--border);">
+        <pre id="log-content"
+          style="color: #d4d4d4; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85rem; margin: 0; white-space: pre-wrap; word-wrap: break-word;">Loading logs...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

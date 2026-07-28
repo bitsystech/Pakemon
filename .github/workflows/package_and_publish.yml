@@ -1,0 +1,86 @@
+name: Packemon Package & Publish Pipeline
+
+on:
+  repository_dispatch:
+    types: [package-app]
+  workflow_dispatch:
+    inputs:
+      appName:
+        description: 'Application Name (e.g. MozillaFirefox)'
+        required: true
+      version:
+        description: 'Application Version'
+        required: true
+      sourceType:
+        description: 'Source Type (winget, evergreen, blob)'
+        required: false
+        default: 'winget'
+      packageId:
+        description: 'Package ID (e.g. Mozilla.Firefox)'
+        required: false
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell Modules & Tools
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          Write-Host "Installing IntuneWin32App and Evergreen modules..."
+          Install-Module -Name IntuneWin32App -Scope CurrentUser -Force -AllowClobber
+          Install-Module -Name Evergreen -Scope CurrentUser -Force -AllowClobber
+          
+          New-Item -ItemType Directory -Force -Path "C:\tools" | Out-Null
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/microsoft/Microsoft-Win32-Content-Prep-Tool/master/IntuneWinAppUtil.exe" -OutFile "C:\tools\IntuneWinAppUtil.exe"
+          Write-Host "Tools setup complete."
+
+      - name: Download Application Installer
+        shell: powershell
+        run: |
+          $appName = "${{ github.event.client_payload.appName || github.event.inputs.appName }}"
+          $version = "${{ github.event.client_payload.version || github.event.inputs.version }}"
+          $sourceType = "${{ github.event.client_payload.sourceType || github.event.inputs.sourceType }}"
+          $packageId = "${{ github.event.client_payload.packageId || github.event.inputs.packageId }}"
+
+          $targetDir = "C:\Temp\pkg_build\PSADT\Files"
+          New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+
+          if ($sourceType -eq "winget" -and $packageId) {
+              Write-Host "Downloading $packageId via Winget..."
+              winget download --id "$packageId" -o "$targetDir" --accept-package-agreements --accept-source-agreements
+          } else {
+              Write-Host "Downloading binary payload..."
+          }
+
+      - name: Package with PSADT & IntuneWinAppUtil
+        shell: powershell
+        run: |
+          $outputDir = "C:\Temp\pkg_build\output"
+          New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
+          
+          # Run IntuneWinAppUtil compiler
+          & "C:\tools\IntuneWinAppUtil.exe" -c "C:\Temp\pkg_build\PSADT" -s "Deploy-Application.ps1" -o "$outputDir" -q
+          Write-Host "Packaging complete."
+
+      - name: Publish to Microsoft Intune via Graph API
+        shell: powershell
+        env:
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+        run: |
+          Import-Module ./worker/GraphApiHelper.psm1
+          $env:GraphApiClientSecret = $env:GRAPH_CLIENT_SECRET
+          Connect-GraphApi -TenantId $env:TENANT_ID -ClientId $env:CLIENT_ID -ClientSecret $env:GRAPH_CLIENT_SECRET
+          
+          $intunewin = Get-ChildItem "C:\Temp\pkg_build\output\*.intunewin" | Select-Object -First 1
+          if ($intunewin) {
+              $appName = "${{ github.event.client_payload.appName || github.event.inputs.appName }}"
+              $version = "${{ github.event.client_payload.version || github.event.inputs.version }}"
+              New-IntuneWin32App -AppName $appName -Version $version -IntunewinFilePath $intunewin.FullName
+          }

@@ -1,0 +1,27 @@
+[
+    {
+        "id": "google-chrome",
+        "name": "Google Chrome",
+        "publisher": "Google"
+    },
+    {
+        "id": "mozilla-firefox",
+        "name": "Mozilla Firefox",
+        "publisher": "Mozilla"
+    },
+    {
+        "id": "7-zip",
+        "name": "7-Zip",
+        "publisher": "Igor Pavlov"
+    },
+    {
+        "id": "notepad-plus-plus",
+        "name": "Notepad++",
+        "publisher": "Don Ho"
+    },
+    {
+        "id": "vlc-media-player",
+        "name": "VLC Media Player",
+        "publisher": "VideoLAN"
+    }
+]

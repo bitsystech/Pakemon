@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packemon - Sign In</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MSAL.js Library -->
+    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg);
+            margin: 0;
+        }
+
+        .login-box {
+            background: var(--surface);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            /* Minimal light grey shadow */
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .dex-footer {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .login-box img {
+            width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .login-box h3 {
+            font-size: 1.25rem;
+            margin-top: 0;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .login-box p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .ms-button {
+            background-color: #0078D4;
+            /* Microsoft Blue */
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            /* Classic MS look */
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ms-button:hover {
+            background-color: #005A9E;
+        }
+
+        .ms-logo-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .icon-pipeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 2.5rem;
+            min-height: 40px;
+            /* Reserve layout space */
+        }
+
+        .pipeline-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            opacity: 0;
+            /* Hidden initially */
+            animation: fadeInPipeline 10s infinite;
+        }
+
+        .pipeline-arrow {
+            width: 24px;
+            height: 24px;
+            color: var(--text-muted);
+            opacity: 0;
+            animation: fadeInPipeline 10s infinite;
+        }
+
+        /* 
+           0-10% (0-1s): Fade in
+           10-85% (1s-8.5s): Stay visible
+           85-100% (8.5s-10s): Fade out abruptly to reset
+        */
+        @keyframes fadeInPipeline {
+            0% {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            85% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <img src="PackemonLogo.png" alt="Packemon Logo">
+        <h3>Enterprise App Packager</h3>
+        <p>Sign in using your corporate account to continue deploying applications.</p>
+
+        <button class="ms-button" id="loginButton">
+            <svg class="ms-logo-icon" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+                <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+                <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+                <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+            </svg>
+            Sign in with Microsoft
+        </button>
+
+        <div class="icon-pipeline">
+            <img src="icon1.gif" alt="System" class="pipeline-icon" style="animation-delay: 0s;">
+            <svg class="pipeline-arrow" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+            <img src="icon2.gif" alt="Process" class="pipeline-icon" style="animation-delay: 2s;">
+            <svg class="pipeline-arrow" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+            <img src="icon3.gif" alt="Package" class="pipeline-icon" style="animation-delay: 4s;">
+            <svg class="pipeline-arrow" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+            <img src="icon4.gif" alt="Cloud" class="pipeline-icon" style="animation-delay: 6s;">
+            <svg class="pipeline-arrow" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+            <img src="icon5.png" alt="Intune" class="pipeline-icon" style="animation-delay: 8s;">
+        </div>
+    </div>
+
+    <div class="dex-footer">A Solution by DEx Team (Digital Experience)</div>
+
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('loginButton').addEventListener('click', () => {
+            signIn();
+        });
+    </script>
+
+</body>
+
+</html>
