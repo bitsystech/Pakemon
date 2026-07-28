@@ -567,3 +567,13 @@ td {
 .tab-content.active {
   display: block;
 }
+
+.badge-pill {
+  background-color: var(--primary-accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-left: 4px;
+  font-weight: 700;
+}

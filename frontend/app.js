@@ -279,32 +279,111 @@ async function loadRequests() {
         const response = await secureFetch('/api/requests');
         if (!response.ok) return;
         const requests = await response.json();
-        const tbody = document.querySelector('#requests-table tbody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
 
-        requests.forEach(req => {
-            const tr = document.createElement('tr');
-            let statusClass = 'status-pending';
-            const s = (req.status || '').toLowerCase();
-            if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
-            if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
+        // 1. Populate Requests & Execution Logs Table
+        const tbodyLogs = document.querySelector('#requests-table tbody');
+        if (tbodyLogs) {
+            tbodyLogs.innerHTML = '';
+            requests.forEach(req => {
+                const tr = document.createElement('tr');
+                let statusClass = 'status-pending';
+                const s = (req.status || '').toLowerCase();
+                if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
+                if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
 
-            tr.innerHTML = `
-                <td>#${req.id}</td>
-                <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
-                <td>${escapeHtml(req.version || '1.0')}</td>
-                <td><span class="status-badge ${statusClass}">${escapeHtml(req.status)}</span></td>
-                <td>${escapeHtml(req.submitter || 'Admin')}</td>
-                <td>${new Date(req.created_at).toLocaleDateString()}</td>
-                <td>
-                    <button onclick="viewLogs(${req.id})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+                tr.innerHTML = `
+                    <td>#${req.id}</td>
+                    <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
+                    <td>${escapeHtml(req.version || '1.0')}</td>
+                    <td><span class="status-badge ${statusClass}">${escapeHtml(req.status)}</span></td>
+                    <td>${escapeHtml(req.submitter || 'Admin')}</td>
+                    <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button onclick="viewLogs(${req.id})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
+                    </td>
+                `;
+                tbodyLogs.appendChild(tr);
+            });
+        }
+
+        // 2. Populate Pending Approvals Table
+        const pendingRequests = requests.filter(r => (r.status || '').toLowerCase() === 'pending');
+        const pendingBadge = document.getElementById('pending-count-badge');
+        if (pendingBadge) pendingBadge.textContent = pendingRequests.length;
+
+        const tbodyPending = document.querySelector('#pending-table tbody');
+        const emptyState = document.getElementById('pending-empty-state');
+        const pendingTable = document.getElementById('pending-table');
+
+        if (tbodyPending) {
+            tbodyPending.innerHTML = '';
+            if (pendingRequests.length === 0) {
+                if (emptyState) emptyState.style.display = 'block';
+                if (pendingTable) pendingTable.style.display = 'none';
+            } else {
+                if (emptyState) emptyState.style.display = 'none';
+                if (pendingTable) pendingTable.style.display = 'table';
+
+                pendingRequests.forEach(req => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${req.id}</td>
+                        <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
+                        <td>${escapeHtml(req.version || '1.0')}</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td>${escapeHtml(req.submitter || 'Admin')}</td>
+                        <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="handleApproveRequest(${req.id})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #107c10;">✅ Approve</button>
+                                <button onclick="handleRejectRequest(${req.id})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #a4262c;">❌ Reject</button>
+                            </div>
+                        </td>
+                    `;
+                    tbodyPending.appendChild(tr);
+                });
+            }
+        }
     } catch (e) {
         console.error('Failed to load requests table', e);
+    }
+}
+
+async function handleApproveRequest(requestId) {
+    if (!confirm(`Approve Request #${requestId} and start packaging on Azure Worker?`)) return;
+    try {
+        const res = await secureFetch(`/api/requests/${requestId}/approve`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'Approve' })
+        });
+        if (res.ok) {
+            alert(`Request #${requestId} approved! The worker VM will start packaging.`);
+            loadRequests();
+        } else {
+            alert(`Failed to approve Request #${requestId}.`);
+        }
+    } catch (err) {
+        console.error('Approval error:', err);
+    }
+}
+
+async function handleRejectRequest(requestId) {
+    if (!confirm(`Reject Request #${requestId}?`)) return;
+    try {
+        const res = await secureFetch(`/api/requests/${requestId}/approve`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'Reject' })
+        });
+        if (res.ok) {
+            alert(`Request #${requestId} rejected.`);
+            loadRequests();
+        } else {
+            alert(`Failed to reject Request #${requestId}.`);
+        }
+    } catch (err) {
+        console.error('Reject error:', err);
     }
 }
 

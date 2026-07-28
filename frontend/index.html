@@ -49,6 +49,7 @@
       <div class="main-tabs-container">
         <button class="main-tab-btn active" data-view="view-dashboard">Dashboard</button>
         <button class="main-tab-btn" data-view="view-manifest">Create Manifest</button>
+        <button class="main-tab-btn" data-view="view-approvals" id="nav-approvals-btn">Approvals <span id="pending-count-badge" class="badge-pill">0</span></button>
         <button class="main-tab-btn" data-view="view-logs">Logs</button>
       </div>
     </div>
@@ -249,7 +250,43 @@
       </div>
     </div>
 
-    <!-- 3. LOGS VIEW -->
+    <!-- 3. APPROVALS VIEW (ONLY PENDING APPROVALS) -->
+    <div id="view-approvals" class="view-panel">
+      <div class="table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="margin: 0; font-size: 1.4rem; color: var(--text);">Pending Package Approvals</h2>
+            <span class="help-text" style="margin-top: 4px;">Review and approve pending submissions before Azure worker execution.</span>
+          </div>
+          <button id="refresh-pending-btn" class="btn-primary-action" style="padding: 8px 16px; font-size: 0.88rem;">🔄 Refresh List</button>
+        </div>
+
+        <div id="pending-empty-state" style="display: none; padding: 3rem; text-align: center; background-color: var(--surface-alt); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎉</div>
+          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: var(--text);">No Pending Approvals</h3>
+          <p class="help-text" style="margin: 0;">All submitted package requests have been approved or processed.</p>
+        </div>
+
+        <table id="pending-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>App Name</th>
+              <th>Ver</th>
+              <th>Status</th>
+              <th>Submitter</th>
+              <th>Submitted Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Injected by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. LOGS VIEW -->
     <div id="view-logs" class="view-panel">
       <div class="table-card">
         <h2 style="margin-top: 0; font-size: 1.35rem; color: var(--text);">Package Requests & Execution Logs</h2>
