@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const targetView = btn.getAttribute('data-view');
             const targetEl = document.getElementById(targetView);
             if (targetEl) targetEl.classList.add('active');
+
+            if (targetView === 'view-logs' || targetView === 'view-approvals') {
+                loadRequests();
+            }
         });
     });
 
@@ -303,7 +307,7 @@ async function loadRequests() {
 
         if (tbodyLogs) {
             tbodyLogs.innerHTML = '';
-            if (requests.length === 0) {
+            if (!requests || requests.length === 0) {
                 if (logsEmptyState) logsEmptyState.style.display = 'block';
                 if (requestsTable) requestsTable.style.display = 'none';
             } else {
@@ -334,7 +338,7 @@ async function loadRequests() {
         }
 
         // 2. Populate Pending Approvals Table
-        const pendingRequests = requests.filter(r => (r.status || '').toLowerCase() === 'pending');
+        const pendingRequests = (requests || []).filter(r => (r.status || '').toLowerCase() === 'pending');
         const pendingBadge = document.getElementById('pending-count-badge');
         if (pendingBadge) pendingBadge.textContent = pendingRequests.length;
 
@@ -433,7 +437,8 @@ async function viewLogs(requestId) {
                 logContent.textContent = logs || 'No log output recorded yet for this request.';
                 if (container) container.scrollTop = container.scrollHeight;
             } else {
-                logContent.textContent = `Logs not found or not available yet for Request #${requestId}.`;
+                const errText = await response.text();
+                logContent.textContent = errText || `Logs not found or not available yet for Request #${requestId}.`;
             }
         } catch (e) {
             logContent.textContent = 'Error loading log output.';

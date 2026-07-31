@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const targetView = btn.getAttribute('data-view');
             const targetEl = document.getElementById(targetView);
             if (targetEl) targetEl.classList.add('active');
+
+            if (targetView === 'view-logs' || targetView === 'view-approvals') {
+                loadRequests();
+            }
         });
     });
 
