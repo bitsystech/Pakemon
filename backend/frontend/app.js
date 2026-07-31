@@ -294,11 +294,36 @@ async function loadApps(retryCount = 3) {
     }
 }
 
+async function fetchRequestsData() {
+    try {
+        const res = await secureFetch('/api/requests');
+        if (res.ok) return await res.json();
+    } catch (e) {
+        console.warn('secureFetch failed for requests, trying raw fetch:', e);
+    }
+    try {
+        const res = await fetch('/api/requests');
+        if (res.ok) return await res.json();
+    } catch (e) {
+        console.error('Raw fetch failed for requests:', e);
+    }
+    return [];
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    try {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return 'N/A';
+        return d.toLocaleDateString();
+    } catch (e) {
+        return 'N/A';
+    }
+}
+
 async function loadRequests() {
     try {
-        const response = await secureFetch('/api/requests');
-        if (!response.ok) return;
-        const requests = await response.json();
+        const requests = await fetchRequestsData();
 
         // 1. Populate Requests & Execution Logs Table
         const tbodyLogs = document.querySelector('#requests-table tbody');
@@ -315,24 +340,35 @@ async function loadRequests() {
                 if (requestsTable) requestsTable.style.display = 'table';
 
                 requests.forEach(req => {
-                    const tr = document.createElement('tr');
-                    let statusClass = 'status-pending';
-                    const s = (req.status || '').toLowerCase();
-                    if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
-                    if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
+                    try {
+                        const tr = document.createElement('tr');
+                        let statusClass = 'status-pending';
+                        const s = (req.status || '').toLowerCase();
+                        if (s.includes('approved') || s.includes('packaged')) statusClass = 'status-approved';
+                        if (s.includes('rejected') || s.includes('failed')) statusClass = 'status-rejected';
 
-                    tr.innerHTML = `
-                        <td>#${req.id}</td>
-                        <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
-                        <td>${escapeHtml(req.version || '1.0')}</td>
-                        <td><span class="status-badge ${statusClass}">${escapeHtml(req.status)}</span></td>
-                        <td>${escapeHtml(req.submitter || 'Admin')}</td>
-                        <td>${new Date(req.created_at).toLocaleDateString()}</td>
-                        <td>
-                            <button onclick="viewLogs(${req.id})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
-                        </td>
-                    `;
-                    tbodyLogs.appendChild(tr);
+                        const reqId = req.id || req.requestId || '0';
+                        const appName = req.app_name || req.package_id || 'N/A';
+                        const ver = req.version || '1.0';
+                        const status = req.status || 'Pending';
+                        const submitter = req.submitter || 'Admin';
+                        const dateText = formatDate(req.created_at);
+
+                        tr.innerHTML = `
+                            <td>#${escapeHtml(reqId)}</td>
+                            <td>${escapeHtml(appName)}</td>
+                            <td>${escapeHtml(ver)}</td>
+                            <td><span class="status-badge ${statusClass}">${escapeHtml(status)}</span></td>
+                            <td>${escapeHtml(submitter)}</td>
+                            <td>${dateText}</td>
+                            <td>
+                                <button onclick="window.viewLogs(${reqId})" class="btn-primary-action" style="padding: 4px 10px; font-size: 0.78rem;">View Logs</button>
+                            </td>
+                        `;
+                        tbodyLogs.appendChild(tr);
+                    } catch (errRow) {
+                        console.error('Error rendering row:', errRow, req);
+                    }
                 });
             }
         }
@@ -356,22 +392,32 @@ async function loadRequests() {
                 if (pendingTable) pendingTable.style.display = 'table';
 
                 pendingRequests.forEach(req => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>#${req.id}</td>
-                        <td>${escapeHtml(req.app_name || req.package_id || 'N/A')}</td>
-                        <td>${escapeHtml(req.version || '1.0')}</td>
-                        <td><span class="status-badge status-pending">Pending</span></td>
-                        <td>${escapeHtml(req.submitter || 'Admin')}</td>
-                        <td>${new Date(req.created_at).toLocaleDateString()}</td>
-                        <td>
-                            <div style="display: flex; gap: 8px;">
-                                <button onclick="handleApproveRequest(${req.id})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #107c10;">✅ Approve</button>
-                                <button onclick="handleRejectRequest(${req.id})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #a4262c;">❌ Reject</button>
-                            </div>
-                        </td>
-                    `;
-                    tbodyPending.appendChild(tr);
+                    try {
+                        const tr = document.createElement('tr');
+                        const reqId = req.id || req.requestId || '0';
+                        const appName = req.app_name || req.package_id || 'N/A';
+                        const ver = req.version || '1.0';
+                        const submitter = req.submitter || 'Admin';
+                        const dateText = formatDate(req.created_at);
+
+                        tr.innerHTML = `
+                            <td>#${escapeHtml(reqId)}</td>
+                            <td>${escapeHtml(appName)}</td>
+                            <td>${escapeHtml(ver)}</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>${escapeHtml(submitter)}</td>
+                            <td>${dateText}</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="window.handleApproveRequest(${reqId})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #107c10;">✅ Approve</button>
+                                    <button onclick="window.handleRejectRequest(${reqId})" class="btn-primary-action" style="padding: 6px 14px; font-size: 0.8rem; background-color: #a4262c;">❌ Reject</button>
+                                </div>
+                            </td>
+                        `;
+                        tbodyPending.appendChild(tr);
+                    } catch (errRow) {
+                        console.error('Error rendering pending row:', errRow, req);
+                    }
                 });
             }
         }
@@ -487,3 +533,9 @@ async function updateVmStatus() {
 function escapeHtml(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+
+// Attach globally for inline HTML event handlers
+window.viewLogs = viewLogs;
+window.handleApproveRequest = handleApproveRequest;
+window.handleRejectRequest = handleRejectRequest;
+window.loadRequests = loadRequests;
