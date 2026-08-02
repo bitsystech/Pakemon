@@ -179,16 +179,17 @@
 
               <div class="form-group">
                 <label for="AppInformation_ApplicationName">Application Name</label>
-                <span class="help-text">Select the application you wish to package. This sets the primary identity in Intune.</span>
-                <select id="AppInformation_ApplicationName" name="AppInformation_ApplicationName">
-                  <!-- Filled via API -->
-                </select>
+                <span class="help-text">Select an application from the catalog or type any custom application name.</span>
+                <input type="text" id="AppInformation_ApplicationName" name="AppInformation_ApplicationName" list="apps-datalist" placeholder="Type application name or select from catalog...">
+                <datalist id="apps-datalist">
+                  <!-- Injected via API -->
+                </datalist>
               </div>
 
               <div class="form-group">
                 <label for="AppInformation_Publisher">Publisher</label>
                 <span class="help-text">The vendor or creator of the software. Displayed to end-users in Company Portal.</span>
-                <input type="text" id="AppInformation_Publisher" name="AppInformation_Publisher" readonly>
+                <input type="text" id="AppInformation_Publisher" name="AppInformation_Publisher" placeholder="e.g. Mozilla, VideoLAN, Microsoft">
               </div>
 
               <div class="form-group">

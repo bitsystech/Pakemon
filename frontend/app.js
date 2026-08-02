@@ -277,16 +277,55 @@ async function loadApps(retryCount = 3) {
         const response = await secureFetch('/api/apps');
         if (!response.ok) throw new Error('Failed to load apps');
         const apps = await response.json();
-        const select = document.getElementById('AppInformation_ApplicationName');
-        if (!select) return;
-        select.innerHTML = '<option value="">Select application...</option>';
-        apps.forEach(app => {
-            const opt = document.createElement('option');
-            opt.value = app.id;
-            opt.textContent = `${app.name} (${app.publisher})`;
-            opt.dataset.publisher = app.publisher;
-            select.appendChild(opt);
-        });
+        const datalist = document.getElementById('apps-datalist');
+        const appInput = document.getElementById('AppInformation_ApplicationName');
+        const pubInput = document.getElementById('AppInformation_Publisher');
+
+        if (datalist) {
+            datalist.innerHTML = '';
+            apps.forEach(app => {
+                const opt = document.createElement('option');
+                opt.value = app.name;
+                opt.dataset.id = app.id;
+                opt.dataset.publisher = app.publisher || '';
+                datalist.appendChild(opt);
+            });
+        }
+
+        if (appInput) {
+            appInput.addEventListener('change', async (e) => {
+                const val = e.target.value;
+                const found = apps.find(a => a.name.toLowerCase() === val.toLowerCase() || a.id === val);
+                if (found) {
+                    if (pubInput && !pubInput.value) pubInput.value = found.publisher || '';
+                    try {
+                        const res = await secureFetch(`/api/apps/${found.id}/config`);
+                        if (res.ok) {
+                            const config = await res.json();
+                            const uploadForm = document.getElementById('upload-form');
+                            for (let key in config) {
+                                const el = uploadForm.elements[key];
+                                if (el) {
+                                    if (el.type === 'checkbox') {
+                                        el.checked = config[key];
+                                    } else if (el.type === 'radio') {
+                                        if (el.length > 1) {
+                                            Array.from(el).forEach(radio => {
+                                                if (radio.value === config[key]) radio.checked = true;
+                                            });
+                                        }
+                                    } else if (el.type !== 'file') {
+                                        el.value = config[key];
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('Failed to fetch app config', err);
+                    }
+                }
+            });
+        }
     } catch (err) {
         if (retryCount > 0) {
             setTimeout(() => loadApps(retryCount - 1), 1000);
